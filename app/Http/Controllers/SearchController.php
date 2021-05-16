@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Patient;
+use Illuminate\Http\Request;
+
+class SearchController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('doctor.search');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // search 
+        switch ($request) {
+            case !empty($request->f_name):
+                $find = Patient::where('f_name', 'like', $request->f_name . '%')->get();
+                break;
+            case !empty($request->l_name):
+                $find = Patient::where('l_name', 'like', $request->l_name . '%')->get();
+                break;
+            case !empty($request->code_archive):
+                $find = Patient::where('code_archive', $request->code_archive)->get();
+                break;
+            default:$find = Patient::where('code_archive', $request->code_archive)->get();
+            
+        }
+
+        return back()->with('success', $find);
+    }
+
+    /**
+     * Display the specified resource.  
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}
