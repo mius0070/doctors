@@ -12,9 +12,11 @@ class Rdv extends Model
     protected $fillable = [
         'note' ,
         'date_rdv' ,
+        'type_cons',
         'patient_id' ,
         'user_id' ,
-        'etat'        
+        'etat',
+        'made_by'        
     ];
 
     public function getPatients(){
@@ -22,5 +24,8 @@ class Rdv extends Model
     }
     public function getDoctor(){
         return $this->belongsTo(User::class,'user_id');
+    }
+    public function getTypeCons(){
+        return $this->belongsTo(Type_consultation::class,'type_cons');
     }
 }

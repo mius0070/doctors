@@ -49,7 +49,7 @@
                         <span class="fas fa-user-md fa-2x text-white"></span>
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">@yield('full_name')</a>
+                        <a href="#" class="d-block"> {{auth()->user()->name}}</a>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                         @section('menu')
                             @if (request()->session()->has('pat'))
 
-
+                            <li class="nav-header"> <i class="nav-icon fas fa-folder-open"></i> &nbsp; Dossier du patient </li>
                                 <li class="nav-item">
                                     <a href="{{ route('doc.patients.show', session()->get('pat')) }}" class="nav-link">
                                         <i class="nav-icon fas fa-user"></i>
@@ -94,7 +94,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route('doc.patients.history')}}" class="nav-link">
                                         <i class="nav-icon fas fa-history"></i>
                                         <p>
                                             Historique
@@ -117,7 +117,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link ">
+                                            <a href="{{route('doc.patients.list_rdv')}}" class="nav-link ">
                                                 {{-- <i class="far fa-circle nav-icon"></i> --}}
                                                 <p>Liste</p>
                                             </a>
@@ -148,15 +148,41 @@
                                       </li>
                                   </ul>
                               </li>
+                              <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-copy"></i>
+                                    <p>
+                                        Document
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{route('doc.patients.list_rdv')}}" class="nav-link ">
+                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                            <p>Liste</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link ">
+                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                            <p>Nouveau</p>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
                                 <li class="nav-item">
                                     <a href="{{ route('doc.destroy.session') }}" class="nav-link active bg-danger">
                                         <i class="nav-icon fas fa-times-circle"></i>
                                         <p>
-                                            fermier le dossier
+                                            Fermier le dossier
                                         </p>
                                     </a>
                                 </li>
+                                
                             @endif
+                            <li class="nav-header"> <i class="nav-icon fas fa-tachometer-alt"></i> &nbsp; Accueil</li>
                             <li class="nav-item">
                                 <a href="{{ route('doc.index') }}"
                                     class="nav-link {{ request()->segment(2) == '' ? 'active' : '' }}">

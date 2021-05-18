@@ -21,12 +21,12 @@ class PatientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function index()
     {
-        $patients = Patient::where('is_visible',1)->with('getWilaya')->get();
-        return view('doctor.patients_list',[
-            'patient'=>$patients,
+        $patients = Patient::where('is_visible', 1)->with('getWilaya')->get();
+        return view('doctor.patients_list', [
+            'patient' => $patients,
         ]);
     }
 
@@ -39,10 +39,10 @@ class PatientsController extends Controller
     {
         $wilaya = Wilaya::all();
         $max_code = Patient::latest()->value('code_archive');
-        return view('doctor.patients_add',[
-            'wilaya'=>$wilaya,
-            'max_code'=>$max_code
-            ] );
+        return view('doctor.patients_add', [
+            'wilaya' => $wilaya,
+            'max_code' => $max_code
+        ]);
     }
 
     /**
@@ -53,7 +53,7 @@ class PatientsController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         // Validation message translate to fransh
         $messages = [
             'f_name.required'       => 'Veuillez saisir un nom',
@@ -68,7 +68,7 @@ class PatientsController extends Controller
             'code_archive.numeric'  => 'Le code archive doit être un nombre',
 
 
-            
+
         ];
         // Validation 
         $this->validate(
@@ -84,24 +84,24 @@ class PatientsController extends Controller
             $messages
         );
         // Change date format
-       $birthday = Carbon::createFromFormat('d-m-Y', $request->birthday)->toDateString();
-       
+        $birthday = Carbon::createFromFormat('d-m-Y', $request->birthday)->toDateString();
+
         //prepare data
         $data = [
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
             'birthday' => $birthday,
-            'gender' => $request->gender ? $request->gender :1,
+            'gender' => $request->gender ? $request->gender : 1,
             'phone' => $request->phone,
-            'wilaya' => $request->wilaya ? $request->wilaya :30,
+            'wilaya' => $request->wilaya ? $request->wilaya : 30,
             'adresse' => $request->adresse,
             'group_sang' => $request->group_sang,
             'code_archive' => $request->code_archive,
             'user_id' => auth()->user()->id,
         ];
-        if($data)
-        Patient::create($data);
-        return back()->with('success','Vous avez ajouté un patient avec succès');
+        if ($data)
+            Patient::create($data);
+        return back()->with('success', 'Vous avez ajouté un patient avec succès');
     }
 
     /**
@@ -112,15 +112,14 @@ class PatientsController extends Controller
      */
     public function show($id)
     {
-        
-        $patient=Patient::where('id',$id)->with('getWilaya')->first();
-        session()->put('pat',$id);
-        session()->put('pat_f_name',$patient->f_name);
-        session()->put('pat_l_name',$patient->l_name);
-        return view('doctor.patients_show',[
-            'patient'=>$patient,
+
+        $patient = Patient::where('id', $id)->with('getWilaya')->first();
+        session()->put('pat', $id);
+        session()->put('pat_f_name', $patient->f_name);
+        session()->put('pat_l_name', $patient->l_name);
+        return view('patient.patients_show', [
+            'patient' => $patient,
         ]);
-       
     }
 
     /**
@@ -132,14 +131,17 @@ class PatientsController extends Controller
     public function edit($id)
     {
         $wilaya = Wilaya::all();
-        $patient=Patient::where('id',$id)->first();
-        $birthday=Carbon::createFromFormat('Y-m-d', $patient->birthday);
-        $birthday=date_format($birthday,'d-m-Y');
-        return view('doctor.patients_edit',
-        ['patient'=>$patient,
-        'wilaya'=>$wilaya,
-        'birthday'=>$birthday
-        ]);
+        $patient = Patient::where('id', $id)->first();
+        $birthday = Carbon::createFromFormat('Y-m-d', $patient->birthday);
+        $birthday = date_format($birthday, 'd-m-Y');
+        return view(
+            'doctor.patients_edit',
+            [
+                'patient' => $patient,
+                'wilaya' => $wilaya,
+                'birthday' => $birthday
+            ]
+        );
     }
 
     /**
@@ -165,7 +167,7 @@ class PatientsController extends Controller
             'code_archive.numeric'  => 'Le code archive doit être un nombre',
 
 
-            
+
         ];
         // Validation 
         $this->validate(
@@ -181,24 +183,24 @@ class PatientsController extends Controller
             $messages
         );
         // Change date format
-       $birthday = Carbon::createFromFormat('d-m-Y', $request->birthday)->toDateString();
-       
+        $birthday = Carbon::createFromFormat('d-m-Y', $request->birthday)->toDateString();
+
         //prepare data
         $data = [
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
             'birthday' => $birthday,
-            'gender' => $request->gender ? $request->gender :1,
+            'gender' => $request->gender ? $request->gender : 1,
             'phone' => $request->phone,
-            'wilaya' => $request->wilaya ? $request->wilaya :30,
+            'wilaya' => $request->wilaya ? $request->wilaya : 30,
             'adresse' => $request->adresse,
             'group_sang' => $request->group_sang,
             'code_archive' => $request->code_archive,
             'user_id' => auth()->user()->id,
         ];
-        $update=Patient::where('id',$id);
+        $update = Patient::where('id', $id);
         $update->update($data);
-        return back()->with('success','Vous avez modifier les informations du patient avec succès');
+        return back()->with('success', 'Vous avez modifier les informations du patient avec succès');
     }
 
     /**
@@ -210,21 +212,43 @@ class PatientsController extends Controller
     public function destroy($id)
     {
         //delete patient
-        $update = Patient::where('id',$id);
-        $data=[
+        $update = Patient::where('id', $id);
+        $data = [
             'is_visible' => 0,
         ];
         $update->update($data);
         return back();
     }
 
-    public function salle(){
+    public function salle()
+    {
 
         $today = Carbon::today()->toDateString();
 
-        $patients=Rdv::with('getPatients')->where('date_rdv',$today)->get(); 
-       
-        return view('doctor.patients_salle',['patients'=>$patients]);
+        $patients = Rdv::with('getPatients')->where('date_rdv', $today)->get();
+
+        return view('doctor.patients_salle', ['patients' => $patients]);
     }
-   
+
+    public function listRdv()
+    {
+        $patient_id = session()->get('pat');
+        $patient = Patient::where('id', $patient_id)->with('getWilaya')->first();
+
+        $rdv = Rdv::with('getPatients')
+            ->with('getTypeCons')
+            ->where('patient_id', $patient_id)
+            ->get();
+            
+        return view(
+            'patient.patient_list_rdv',
+            [
+                'rdv' => $rdv,
+                'patient' => $patient
+            ]
+        );
+    }
+    public function history(){
+        return view('patient.patients_historique');
+    }
 }

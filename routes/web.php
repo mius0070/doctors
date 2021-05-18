@@ -25,9 +25,14 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::resource('/patients','PatientsController');
     Route::get('/patients/{patient}/del','PatientsController@destroy')->name('patients.del');
     Route::get('/patient/salle','PatientsController@salle')->name('patients.salle');
+    Route::get('/patient/gs_rdvs','PatientsController@listRdv')->name('patients.list_rdv');
+    Route::get('/patient/historique','PatientsController@history')->name('patients.history');
+
+
     Route::resource('/search','SearchController');
     Route::resource('/calendar','CalendarController');
     Route::resource('/rdv','RdvController');
+    Route::get('/rdv/{rdv}/cancel','RdvController@destroy')->name('rdv.cancel');
     Route::resource('/profile','ProfileController');
     // Destroy session
     Route::get('/destroy',function(){

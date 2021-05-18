@@ -110,6 +110,14 @@ class RdvController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $update=Rdv::where('id',$id);
+        $data=[
+            'etat'=>0,
+            'made_by'=>auth()->user()->name
+        ];
+        $update->update($data);
+
+        return back();
     }
 }
