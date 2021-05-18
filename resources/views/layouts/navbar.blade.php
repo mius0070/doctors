@@ -45,7 +45,7 @@
       <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
           <span class="dropdown-item dropdown-header">Paramètres</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="{{route('doc.profile.index')}}" class="dropdown-item">
               <i class="fas fa-user-circle mr-2"></i> Mon Profil
           </a>
           <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

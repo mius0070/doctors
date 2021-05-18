@@ -42,6 +42,12 @@ class LoginController extends Controller
     {
         return 'username';
     }
-
-   
+    public function redirectPath()
+    {
+        if (auth()->user()->type === 1) {
+            redirect('/doc');
+        } else {
+            redirect('/admin');
+        }
+    }
 }

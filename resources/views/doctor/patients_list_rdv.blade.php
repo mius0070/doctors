@@ -70,29 +70,38 @@
                         @foreach ($rdv as $item)
                             <tbody>
                                 <td>{{ $item->getPatients->code_archive }}</td>
-                                <td>{{ $item->getPatients->f_name }} {{ $item->getPatients->l_name }}</td>
+                                <td>{{ $item->getPatients->f_name }}
+                                    {{ $item->getPatients->l_name }}
+                                    <br>
+                                    <small>{{ $item->getPatients->phone }}</small></td>
                                 <td>{{ $item->getDoctor->name }}</td>
                                 <td>@switch($item)
                                         @case($item->etat === 0)
-                                        <span class="badge bg-danger">Annulé</span>
+                                            <span class="badge bg-danger">Annulé</span>
                                         @break
                                         @case($item->etat === 1)
-                                        <span class="badge bg-success">Validé</span>
+                                            <span class="badge bg-success">Validé</span>
 
                                         @break
                                         @case($item->etat === 2)
-                                        <span class="badge badge-primary">en cours</span>
+                                            <span class="badge badge-primary">en cours</span>
 
                                         @break
                                         @case($item->etat === 3)
-                                        <span class="badge badge-warning">absente</span>
+                                            <span class="badge badge-warning">absente</span>
 
                                         @break
                                         @default
 
                                     @endswitch
                                 </td>
-                                <td></td>
+                                <td style="width: 20px;">
+                                    <a href="{{ route('doc.rdv.destroy', $item->id) }}" data-method="DELETE"
+                                        onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
+                                        class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                                        title="Supprimer">annuler</i></a>
+
+                                </td>
                             </tbody>
                         @endforeach
 

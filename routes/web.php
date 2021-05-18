@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\URL;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes(['register' => true,'reset' => false]);
+Auth::routes(['register' => false,'reset' => false]);
 
 Route::get('/',function(){
     return redirect()->route('login');
@@ -28,12 +28,16 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::resource('/search','SearchController');
     Route::resource('/calendar','CalendarController');
     Route::resource('/rdv','RdvController');
+    Route::resource('/profile','ProfileController');
     // Destroy session
     Route::get('/destroy',function(){
         session()->forget('pat');
         return redirect('/');
     })->name('destroy.session');
-   
+    
+    Route::get('/print',function(){
+        return view('layouts.print');
+    });
 });
 Route::namespace('App\Http\Controllers\Admin')->prefix('admin')->name('admin.')->middleware('admin')->group(function(){
     Route::resource('/','HomeController');

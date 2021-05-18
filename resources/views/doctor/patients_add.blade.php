@@ -29,6 +29,7 @@
                 <div class="col-md-3">
                     <form method="POST" action="{{ route('doc.patients.store') }}">
                         @csrf
+                        @method('POST')
                         <div class="form-group">
                             <label>Nom</label>
                             <input name="f_name" type="text" class="form-control @error('f_name')  is-invalid @enderror"

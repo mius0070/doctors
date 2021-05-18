@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class ProfileController extends Controller
 {
     public function __construct()
     {
@@ -18,8 +17,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        return 'Admin Page';
+        return view('user.users_profile');
     }
 
     /**
