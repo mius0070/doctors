@@ -86,7 +86,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route('doc.patients.barcode')}}" class="nav-link">
                                         <i class="nav-icon fas fa-barcode"></i>
                                         <p>
                                             Code barre

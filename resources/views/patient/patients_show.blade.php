@@ -6,7 +6,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
                         <h1> {{Str::upper($patient->f_name) }}&nbsp;{{Str::upper($patient->l_name)}}</h1>
@@ -18,7 +18,7 @@
                 </div>
 
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="info-box">
                     <span class="info-box-icon bg-info elevation-1"><i class="fas fa-clock"></i></span>
 
@@ -53,7 +53,7 @@
                         <span class="info-box-number">
                             <h5>{{$rdv->date_rdv}}</h5>
                         </span>
-                        <span class="info-box-text"><strong> {{$rdv->date_rdv}}</strong></span>
+                        <span class="info-box-text"><strong> {{$rdv->getTypeCons->lib}}</strong></span>
 
                     </div>
                     <!-- /.info-box-content -->
