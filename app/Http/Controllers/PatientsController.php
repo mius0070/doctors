@@ -37,6 +37,7 @@ class PatientsController extends Controller
      */
     public function create()
     {
+        
         $wilaya = Wilaya::all();
         $max_code = Patient::latest()->value('code_archive');
         return view('doctor.patients_add', [
@@ -112,13 +113,15 @@ class PatientsController extends Controller
      */
     public function show($id)
     {
-
+        $today = Carbon::today()->toDateString();
         $patient = Patient::where('id', $id)->with('getWilaya')->first();
         session()->put('pat', $id);
         session()->put('pat_f_name', $patient->f_name);
         session()->put('pat_l_name', $patient->l_name);
+        $rdv=Rdv::where('patient_id',$id)->first();
         return view('patient.patients_show', [
             'patient' => $patient,
+            'rdv'=> $rdv
         ]);
     }
 

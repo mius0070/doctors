@@ -27,6 +27,8 @@
             display: block;
             margin: 0 auto;
             box-shadow: 0 0 0.2cm rgba(0, 0, 0, 0.5);
+            padding: 15px;
+
         }
 
         page[size="A4"] {
@@ -53,18 +55,21 @@
 
 <body>
     <page size="A4">
-        <div class="jumbotron bg-white">
             <div class="row">
-                <div class="col-md-5 ">
-                    <h3 class="text-primary">Hopital ophtalmo ouargla</h3>
+                <div class="col-md-5 text-center">
+                    <h5 class="text-primary ">Dr.ADDOURI S. Eps Bouamama</h5>
+                    <h6> <small class="">SPECIALISTE Gynécologie-Obstétrique</small></h6>
+                    <h6> <small class="">N° 302355 / GH</small></h6>
                 </div>
                 <div class="col-md-2 text-center">
-                    logo
+                    <img src="{{ asset('/dist/img/logo.png') }}" width="100" alt="Logo"
+                    class="brand-image img-circle" style="opacity: .8">
                 </div>
                 <div class="col-md-5 text-right">
-                    OUARGLA
-                    <br>
-                    tel:029715346 / fax:029715337
+                    <h5> <small class="">Cité ifri la silisse - ouargla</small></h5>
+                    <h5> <small class="">tel:029715346 / fax:029715337</small></h5>
+                    <h5> <small class="">dr.kaddouri@gmail.com</small></h5>
+
                 </div>
             </div>
             <hr>
@@ -75,7 +80,6 @@
 
                 </div>
             </div>
-        </div>
         <div class="jumbotron bg-">
             qsqs
         </div>

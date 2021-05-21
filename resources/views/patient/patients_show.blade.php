@@ -42,9 +42,24 @@
                         <span class="info-box-text"><strong> Consultations</strong></span>
 
                     </div>
+                    
                     <!-- /.info-box-content -->
                 </div>
                 <!-- /.info-box -->
+                <div class="info-box">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-calendar"></i></span>
+
+                    <div class="info-box-content ">
+                        <span class="info-box-number">
+                            <h5>{{$rdv->date_rdv}}</h5>
+                        </span>
+                        <span class="info-box-text"><strong> {{$rdv->date_rdv}}</strong></span>
+
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+               
 
             </div>
         </div>

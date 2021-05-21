@@ -9,6 +9,10 @@ use Illuminate\Support\Carbon;
 
 class RdvController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

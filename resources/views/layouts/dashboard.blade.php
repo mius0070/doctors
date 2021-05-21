@@ -166,7 +166,31 @@
                                     <li class="nav-item">
                                         <a href="#" class="nav-link ">
                                             {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                            <p>Nouveau</p>
+                                            <p>Ordanance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link ">
+                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                            <p>Analyse</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link ">
+                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                            <p>Certificat médical</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link ">
+                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                            <p>Compte-rendu</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link ">
+                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                            <p>Echographie obstétricale</p>
                                         </a>
                                     </li>
                                     
@@ -182,7 +206,7 @@
                                 </li>
                                 
                             @endif
-                            <li class="nav-header"> <i class="nav-icon fas fa-tachometer-alt"></i> &nbsp; Accueil</li>
+                            <li class="nav-header"> <i class="nav-icon fas fa-bars"></i> &nbsp; Accueil</li>
                             <li class="nav-item">
                                 <a href="{{ route('doc.index') }}"
                                     class="nav-link {{ request()->segment(2) == '' ? 'active' : '' }}">
