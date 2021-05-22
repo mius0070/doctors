@@ -9,10 +9,11 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <h1> {{Str::upper($patient->f_name) }}&nbsp;{{Str::upper($patient->l_name)}}</h1>
-                        <h4>{{ \Carbon\Carbon::parse($patient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}</h4>
-                        <h4>{{$patient->phone}}</h4>
-                        <h4>{{$patient->getWilaya->lib_wilaya}}</h4>
+                        <h1> {{ Str::upper($patient->f_name) }}&nbsp;{{ Str::upper($patient->l_name) }}</h1>
+                        <h4>{{ \Carbon\Carbon::parse($patient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}
+                        </h4>
+                        <h4>{{ $patient->phone }}</h4>
+                        <h4>{{ $patient->getWilaya->lib_wilaya }}</h4>
 
                     </div>
                 </div>
@@ -24,7 +25,7 @@
 
                     <div class="info-box-content ">
                         <span class="info-box-number">
-                            <h5>{{$patient->code_archive}}</h5>
+                            <h5>{{ $patient->code_archive }}</h5>
                         </span>
                         <span class="info-box-text"><strong> Code archive</strong></span>
 
@@ -42,41 +43,47 @@
                         <span class="info-box-text"><strong> Consultations</strong></span>
 
                     </div>
-                    
+
                     <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box -->
-                <div class="info-box">
-                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-calendar"></i></span>
+                @php
+                    $date_rdv = \Carbon\Carbon::parse($rdv->date_rdv);
+                @endphp
+                @if ($date_rdv->isFuture() || $date_rdv->isToday())
+                    <!-- /.info-box -->
+                    <div class="info-box">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-calendar"></i></span>
 
-                    <div class="info-box-content ">
-                        <span class="info-box-number">
-                            <h5>{{$rdv->date_rdv}}</h5>
-                        </span>
-                        <span class="info-box-text"><strong> {{$rdv->getTypeCons->lib}}</strong></span>
+                        <div class="info-box-content ">
+                            <span class="info-box-number">
+                                <h5>{{ $rdv->date_rdv }}</h5>
+                            </span>
+                            <span class="info-box-text"><strong> {{ $rdv->getTypeCons->lib }}</strong></span>
 
+                        </div>
+                        <!-- /.info-box-content -->
                     </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-               
+                    <!-- /.info-box -->
+                @endif
+
+
 
             </div>
         </div>
-       
-       
+
+
     </div><!-- /.container-fluid -->
 
 @endsection
 
 
 
- 
+
 
 @section('style')
 
 
-    
+
 @endsection
 
 @section('script')

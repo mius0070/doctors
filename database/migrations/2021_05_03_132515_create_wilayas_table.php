@@ -14,7 +14,7 @@ class CreateWilayasTable extends Migration
     public function up()
     {
         Schema::create('wilayas', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id');
             $table->string('lib_wilaya');
             
         });
