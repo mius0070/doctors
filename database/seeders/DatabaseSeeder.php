@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Entete;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,5 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(WilayaTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(EnteteTableSeeder::class);
     }
 }

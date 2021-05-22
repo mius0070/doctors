@@ -46,6 +46,7 @@
 
                     <!-- /.info-box-content -->
                 </div>
+                @if ($rdv !=null )
                 @php
                     $date_rdv = \Carbon\Carbon::parse($rdv->date_rdv);
                 @endphp
@@ -65,6 +66,9 @@
                     </div>
                     <!-- /.info-box -->
                 @endif
+                    
+                @endif
+                
 
 
 

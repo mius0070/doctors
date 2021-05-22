@@ -22,7 +22,7 @@ class CreateEntetesTable extends Migration
             $table->string('adresse')->nullable();
             $table->tinyInteger('wilaya');
             $table->string('phone',10);
-            $table->string('fax',10);
+            $table->string('fax',10)->nullable();
             $table->string('email')->nullable();
             $table->string('logo');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
