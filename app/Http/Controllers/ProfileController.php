@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
-
+use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     public function __construct()
@@ -95,19 +95,36 @@ class ProfileController extends Controller
                 'name'        => 'required',
 
                 'birthday'      => 'required|date_format:d-m-Y',
-                    'email'=>'required|email'
+                    'email'=>'required|email',
+
             ],
             $messages
         );
         $birthday = Carbon::createFromFormat('d-m-Y', $request->birthday)->toDateString();
-        $data = [
-          'name'=>$request->name,
-          'birthday'=>$birthday,
-          'email'=>$request->email
-        ];
-        $update = User::where('id', $id)->update($data);
 
-        return back()->with('success', 'Vous avez modifier les informations de votre profile avec succès');
+        if($request->has('password')){
+
+            $data = [
+                'name'=>$request->name,
+                'birthday'=>$birthday,
+                'email'=>$request->email,
+                'password'=>Hash::make($request->password)
+              ];
+              $update = User::where('id', $id)->update($data);
+
+              return back()->with('success', 'Vous avez modifier les informations de votre profile avec succès');
+        }else{
+            $data = [
+                'name'=>$request->name,
+                'birthday'=>$birthday,
+                'email'=>$request->email,
+
+              ];
+              $update = User::where('id', $id)->update($data);
+
+              return back()->with('success', 'Vous avez modifier les informations de votre profile avec succès');
+        }
+
     }
 
     /**
