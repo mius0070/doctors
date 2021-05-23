@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable();
             $table->string('username')->unique();
             $table->string('password');
-            $table->tinyInteger('type');
+            $table->tinyInteger('type')->comment('1-> doc 0-> admin');
             $table->tinyInteger('service');
             $table->tinyInteger('role');
             $table->tinyInteger('is_visible')->default(1);

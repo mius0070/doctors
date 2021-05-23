@@ -39,7 +39,7 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
         session()->forget('pat');
         return redirect('/');
     })->name('destroy.session');
-    
+
     Route::get('/print',function(){
         return view('layouts.print');
     });

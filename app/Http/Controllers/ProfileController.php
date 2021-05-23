@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class ProfileController extends Controller
 {
@@ -17,7 +20,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('user.users_profile');
+        $id = Auth::id();
+        $user = User::where('id', $id)->first();
+        //dd($user);
+        return view('user.users_profile')->with('user',$user);
     }
 
     /**
@@ -72,7 +78,36 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+          // Validation message translate to fransh
+          $messages = [
+            'name.required'       => 'Veuillez saisir un nom',
+            'birthday.required'     => 'Veuillez saisir une date de naissance',
+            'birthday.date'         => 'Veuillez saisir une date de naissance',
+            'birthday.date_format'  => 'Format de date incorrect',
+            'email.required'        => 'Veuillez saisir votre email',
+            'email.email'        => 'Format de votre email est incorrect',
+
+        ];
+        // Validation
+        $this->validate(
+            $request,
+            [
+                'name'        => 'required',
+
+                'birthday'      => 'required|date_format:d-m-Y',
+                    'email'=>'required|email'
+            ],
+            $messages
+        );
+        $birthday = Carbon::createFromFormat('d-m-Y', $request->birthday)->toDateString();
+        $data = [
+          'name'=>$request->name,
+          'birthday'=>$birthday,
+          'email'=>$request->email
+        ];
+        $update = User::where('id', $id)->update($data);
+
+        return back()->with('success', 'Vous avez modifier les informations de votre profile avec succès');
     }
 
     /**
