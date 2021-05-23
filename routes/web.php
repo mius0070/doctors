@@ -27,6 +27,8 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::get('/patient/salle','PatientsController@salle')->name('patients.salle');
     Route::get('/patient/gs_rdvs','PatientsController@listRdv')->name('patients.list_rdv');
     Route::get('/patient/historique','PatientsController@history')->name('patients.history');
+    Route::get('/patient/barcode','PatientsController@barcode')->name('patients.barcode');
+
 
 
     Route::resource('/search','SearchController');

@@ -18,10 +18,12 @@ class CreateEntetesTable extends Migration
             $table->id();
             $table->string('code_etablissement');
             $table->string('titre');
+            $table->string('desc')->nullable();
+            $table->string('adresse')->nullable();
             $table->tinyInteger('wilaya');
             $table->string('phone',10);
-            $table->string('fax',10);
-            $table->string('email');
+            $table->string('fax',10)->nullable();
+            $table->string('email')->nullable();
             $table->string('logo');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

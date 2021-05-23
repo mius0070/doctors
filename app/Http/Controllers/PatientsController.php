@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Rdv;
 use App\Models\Wilaya;
+use Faker\Core\Barcode;
+use Faker\Provider\Barcode as ProviderBarcode;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Picqer;
+
+
 
 
 class PatientsController extends Controller
@@ -37,7 +42,6 @@ class PatientsController extends Controller
      */
     public function create()
     {
-        
         $wilaya = Wilaya::all();
         $max_code = Patient::latest()->value('code_archive');
         return view('doctor.patients_add', [
@@ -114,14 +118,15 @@ class PatientsController extends Controller
     public function show($id)
     {
         $today = Carbon::today()->toDateString();
+
         $patient = Patient::where('id', $id)->with('getWilaya')->first();
         session()->put('pat', $id);
         session()->put('pat_f_name', $patient->f_name);
         session()->put('pat_l_name', $patient->l_name);
-        $rdv=Rdv::where('patient_id',$id)->first();
+        $rdv = Rdv::where('patient_id', $id)->with('getTypeCons')->first();
         return view('patient.patients_show', [
             'patient' => $patient,
-            'rdv'=> $rdv
+            'rdv' => $rdv
         ]);
     }
 
@@ -242,16 +247,37 @@ class PatientsController extends Controller
             ->with('getTypeCons')
             ->where('patient_id', $patient_id)
             ->get();
-            
+
         return view(
-            'patient.patient_list_rdv',
+            'patient.patients_list_rdv',
             [
                 'rdv' => $rdv,
                 'patient' => $patient
             ]
         );
     }
-    public function history(){
+    public function history()
+    {
         return view('patient.patients_historique');
+    }
+
+    public function barcode()
+    {
+        if(session()->has('pat')){
+
+       
+        $patient_id = session()->get('pat');
+        $patient = Patient::where('id', $patient_id)->first();
+        $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+        $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
+        return view(
+            'patient.patients_barcode',
+            [
+                'patient' => $patient,
+                'barcode' =>$barcode,
+            ]
+        );
+    }
+    return abort(404);
     }
 }
