@@ -22,4 +22,8 @@ class Entete extends Model
             'logo'
         
     ];
+
+    public function getWilaya(){
+       return $this->belongsTo(Wilaya::class,'wilaya');
+    }
 }

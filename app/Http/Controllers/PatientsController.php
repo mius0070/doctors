@@ -120,7 +120,7 @@ class PatientsController extends Controller
         $today = Carbon::today()->toDateString();
 
         $patient = Patient::where('id', $id)->with('getWilaya')->first();
-        session()->put('pat', $id);
+        session()->put('pat', $patient->id);
         session()->put('pat_f_name', $patient->f_name);
         session()->put('pat_l_name', $patient->l_name);
         $rdv = Rdv::where('patient_id', $id)->with('getTypeCons')->first();
@@ -279,5 +279,10 @@ class PatientsController extends Controller
         );
     }
     return abort(404);
+    }
+    public function ordonnance(){
+        $patient_id = session()->get('pat');
+        $patient = Patient::where('id',$patient_id)->first();
+        return view('patient.patients_ordonnance',['patient'=>$patient]);
     }
 }

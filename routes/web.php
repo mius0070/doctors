@@ -22,12 +22,15 @@ Route::get('/',function(){
 
 Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middleware('doctor')->group(function(){
     Route::resource('/','HomeController');
+    Route::get('/print','HomeController@print')->name('print');
     Route::resource('/patients','PatientsController');
     Route::get('/patients/{patient}/del','PatientsController@destroy')->name('patients.del');
     Route::get('/patient/salle','PatientsController@salle')->name('patients.salle');
     Route::get('/patient/gs_rdvs','PatientsController@listRdv')->name('patients.list_rdv');
     Route::get('/patient/historique','PatientsController@history')->name('patients.history');
     Route::get('/patient/barcode','PatientsController@barcode')->name('patients.barcode');
+    Route::get('/patient/ordonnance','PatientsController@ordonnance')->name('patients.ordonnance');
+
 
 
 
@@ -42,9 +45,7 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
         return redirect('/');
     })->name('destroy.session');
     
-    Route::get('/print',function(){
-        return view('layouts.print');
-    });
+
 });
 Route::namespace('App\Http\Controllers\Admin')->prefix('admin')->name('admin.')->middleware('admin')->group(function(){
     Route::resource('/','HomeController');

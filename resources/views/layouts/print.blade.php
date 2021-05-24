@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>@yield('page_title')</title>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -57,22 +57,31 @@
     <page size="A4">
             <div class="row">
                 <div class="col-md-5 text-center">
-                    <h5 class="text-primary ">Dr.ADDOURI S. Eps Bouamama</h5>
-                    <h6> <small class="">SPECIALISTE Gynécologie-Obstétrique</small></h6>
-                    <h6> <small class="">N° 302355 / GH</small></h6>
+                    <h5 class="text-primary ">{{Str::upper($entete->titre) }}</h5>
+                    <h6> <small class="">{{$entete->desc}}</small></h6>
+                    <h6> <small class="">N° {{$entete->code_etablissement}} / GH</small></h6>
                 </div>
                 <div class="col-md-2 text-center">
-                    <img src="{{ asset('/dist/img/logo.png') }}" width="100" alt="Logo"
+                    <img src="{{ asset($entete->logo) }}" width="100" alt="Logo"
                     class="brand-image img-circle" style="opacity: .8">
                 </div>
                 <div class="col-md-5 text-right">
-                    <h5> <small class="">Cité ifri la silisse - ouargla</small></h5>
-                    <h5> <small class="">tel:029715346 / fax:029715337</small></h5>
-                    <h5> <small class="">dr.kaddouri@gmail.com</small></h5>
+                    <h5> <small class="">{{$entete->adresse}} - {{$entete->getWilaya->lib_wilaya}}</small></h5>
+                    <h5> <small class="">
+                        @if ($entete->phone != null)
+                        Tél: {{$entete->phone}}
+                        @endif
+                        /
+                        @if ($entete->fax != null)
+                        Fax: {{$entete->fax}}
+                        @endif
+                         </small></h5>
+                    <h5> <small class="">{{$entete->email}}</small></h5>
 
                 </div>
             </div>
             <hr>
+            @yield('content')
             <div class="row">
                 <div class="col-md-6"></div>
                 <div class="col-md-6">
@@ -80,7 +89,7 @@
 
                 </div>
             </div>
-        <div class="jumbotron bg-">
+        <div class="container">
             qsqs
         </div>
     </page>

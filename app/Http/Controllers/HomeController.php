@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entete;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,6 +26,10 @@ class HomeController extends Controller
     {
 
         return view('doctor.welcome');
+    }
+    public function print(){
+        $entete=Entete::with('getWilaya')->first();
+        return view('layouts.print',['entete'=>$entete]);
     }
  
     
