@@ -27,24 +27,24 @@
             <div class="col-md-6">
            <div class="card">
                <div class="card-body">
-                
-                        <form action="POST">
+
+                        <form action="{{ route('doc.profile.update',$user->id) }}"  method="POST">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
                                 <label>Identifiat</label>
                                 <input name="user" type="text" class="form-control @error('user')  is-invalid @enderror"
-                                    placeholder="user" value="{{ old('user') }}" value="user1" disabled>
-                                
+                                    placeholder="user"  value="{{ $user->username }}" disabled>
+
                                     <span class="text-warning" role="alert">
                                        &nbsp; <small> Votre identifiant ne peut pas être changer</small>
                                     </span>
-                                
+
                             </div>
                             <div class="form-group">
                                 <label>Nom et Prénom</label>
                                 <input name="name" type="text" class="form-control @error('name')  is-invalid @enderror"
-                                    placeholder="Nom" value="{{ old('name') }}">
+                                    placeholder="Nom" value="{{ $user->name }}">
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                     </span>
@@ -59,7 +59,7 @@
                             </div>
                             <input name="birthday" type="text" class="form-control @error('birthday')  is-invalid @enderror"
                                 data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy"
-                                placeholder="jj-mm-aaaa" data-mask value="{{ old('birthday') }}">
+                                placeholder="jj-mm-aaaa" data-mask value="{{ $date_nais }}">
                             @error('birthday')
                                 <span class="invalid-feedback" role="alert"></span>
 
@@ -70,7 +70,7 @@
                     <div class="form-group">
                         <label>Email</label>
                         <input name="email" type="email" class="form-control @error('email')  is-invalid @enderror"
-                            placeholder="email" value="{{ old('email') }}" >
+                            placeholder="email" value="{{ $user->email }}" >
                         @error('email')
                             <span class="invalid-feedback" role="alert"></span>
                         @enderror
@@ -96,23 +96,23 @@
                         </form>
                     </div>
                 </div>
-                
+
                </div>
            </div>
-       
-       
+
+
     </div><!-- /.container-fluid -->
 
 @endsection
 
 
 
- 
+
 
 @section('style')
 
 
-    
+
 @endsection
 
 @section('script')
@@ -123,7 +123,7 @@
 <script>
     $(function() {
 
-    
+
         //Datemask dd/mm/yyyy
         $('#datemask').inputmask('yyyy-mm-dd', {
             'placeholder': 'yyyy-mm-dd'
