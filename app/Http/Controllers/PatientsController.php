@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Medicament;
 use App\Models\Patient;
 use App\Models\Rdv;
 use App\Models\Wilaya;
@@ -283,6 +284,10 @@ class PatientsController extends Controller
     public function ordonnance(){
         $patient_id = session()->get('pat');
         $patient = Patient::where('id',$patient_id)->first();
-        return view('patient.patients_ordonnance',['patient'=>$patient]);
+        $medicaments= Medicament::all();
+        return view('patient.patients_ordonnance',[
+            'patient'=>$patient,
+            'medicaments'=>$medicaments
+            ]);
     }
 }

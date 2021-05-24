@@ -52,13 +52,13 @@
                             <label>Sexe</label>
 
                             <div class="custom-control custom-radio">
-                                <input name="gender" value="1"  class="custom-control-input custom-control-input-info "
+                                <input name="gender" value="1" class="custom-control-input custom-control-input-info "
                                     type="radio" id="customRadio4" name="customRadio2" checked>
                                 <label for="customRadio4" class="custom-control-label">Homme</label>
-                                
+
                             </div>
                             <div class="custom-control custom-radio">
-                                <input name="gender" value="2" 
+                                <input name="gender" value="2"
                                     class="custom-control-input custom-control-input-info custom-control-input-outline"
                                     type="radio" id="customRadio5" name="customRadio2">
                                 <label for="customRadio5" class="custom-control-label">Femme </label>
@@ -109,14 +109,15 @@
                     <div class="form-group">
                         <label>Téléphone</label>
                         <input name="phone" type="text" class="form-control @error('phone')  is-invalid @enderror"
-                            placeholder="Téléphone" value="{{ old('phone') }}" data-inputmask="&quot;mask&quot;: &quot;9999999999&quot;" data-mask="" im-insert="true">
+                            placeholder="Téléphone" value="{{ old('phone') }}"
+                            data-inputmask="&quot;mask&quot;: &quot;9999999999&quot;" data-mask="" im-insert="true">
                         @error('phone')
                             <span class="invalid-feedback" role="alert"></span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label>Wilaya</label>
-                        <select name="wilaya" class="form-control select2" style="width: 100%;">
+                        <select name="wilaya" class="form-control select2 js-states" style="width: 100%;">
                             @foreach ($wilaya as $item)
                                 <option value="{{ $item->id }}" selected>{{ $item->lib_wilaya }}</option>
                             @endforeach
@@ -169,7 +170,9 @@
         $(function() {
 
             //Initialize Select2 Elements
-            $('.select2').select2()
+            $('.select2').select2({
+                placeholder: "Select a state",
+            })
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
