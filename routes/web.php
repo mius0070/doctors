@@ -29,7 +29,11 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::get('/patient/gs_rdvs','PatientsController@listRdv')->name('patients.list_rdv');
     Route::get('/patient/historique','PatientsController@history')->name('patients.history');
     Route::get('/patient/barcode','PatientsController@barcode')->name('patients.barcode');
-    Route::get('/patient/ordonnance','PatientsController@ordonnance')->name('patients.ordonnance');
+    //documents
+    Route::get('/patient/documents/ordonnance','DocumentsController@ordonnance')->name('patients.ordonnance');
+    Route::post('/patient/documents/ordonnance/store','DocumentsController@storeOrdonnance')->name('patients.storeOrdonnance');
+    Route::get('/patient/documents/ordonnance/show/{id}','DocumentsController@showOrdonnance')->name('patients.showOrdonnance');
+
 
 
 

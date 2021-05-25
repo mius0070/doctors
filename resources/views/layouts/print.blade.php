@@ -22,77 +22,94 @@
             background: rgb(204, 204, 204);
         }
 
-        page {
+        page[size="A4"] {
+            width: 22cm;
+            height: 29.7cm;
             background: white;
             display: block;
             margin: 0 auto;
-            box-shadow: 0 0 0.2cm rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
             padding: 15px;
 
         }
 
-        page[size="A4"] {
-            width: 21cm;
-            height: 29.7cm;
-        }
 
-        page[size="A4"][layout="portrait"] {
-            width: 29.7cm;
-            height: 21cm;
-        }
 
         @media print {
 
             body,
             page {
+             
                 margin: 0;
+                padding: 0;
                 box-shadow: 0;
+            }
+            .dropdown ,.dropdown *{
+                visibility: hidden;
             }
         }
 
     </style>
+    @yield('style')
 </head>
 
 <body>
+    <center >
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Option
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <button class="dropdown-item" type="button" onclick="window.print()">Imprimer</button>
+              <a href="{{route('doc.patients.ordonnance')}}" class="dropdown-item" type="button">Retour</a>
+            </div>
+          </div>
+        </center>
     <page size="A4">
-            <div class="row">
-                <div class="col-md-5 text-center">
-                    <h5 class="text-primary ">{{Str::upper($entete->titre) }}</h5>
-                    <h6> <small class="">{{$entete->desc}}</small></h6>
-                    <h6> <small class="">N° {{$entete->code_etablissement}} / GH</small></h6>
-                </div>
-                <div class="col-md-2 text-center">
-                    <img src="{{ asset($entete->logo) }}" width="100" alt="Logo"
-                    class="brand-image img-circle" style="opacity: .8">
-                </div>
-                <div class="col-md-5 text-right">
-                    <h5> <small class="">{{$entete->adresse}} - {{$entete->getWilaya->lib_wilaya}}</small></h5>
-                    <h5> <small class="">
+        
+        <div class="row ">
+            <div class="col-md-5 text-center">
+                <h5 class="text-primary ">{{ Str::upper($entete->titre) }}</h5>
+                <h6> <small class="">{{ $entete->desc }}</small></h6>
+                <h6> <small class="">N° {{ $entete->code_etablissement }} / GH</small></h6>
+            </div>
+            <div class="col-md-2 text-center">
+                <img src="{{ asset($entete->logo) }}" width="100" alt="Logo" class="brand-image img-circle"
+                    style="opacity: .8">
+            </div>
+            <div class="col-md-5 text-right">
+                <h5> <small class="">{{ $entete->adresse }} - {{ $entete->getWilaya->lib_wilaya }}</small></h5>
+                <h5> <small class="">
                         @if ($entete->phone != null)
-                        Tél: {{$entete->phone}}
+                            Tél: {{ $entete->phone }}
                         @endif
                         /
                         @if ($entete->fax != null)
-                        Fax: {{$entete->fax}}
+                            Fax: {{ $entete->fax }}
                         @endif
-                         </small></h5>
-                    <h5> <small class="">{{$entete->email}}</small></h5>
+                    </small></h5>
+                <h5> <small class="">{{ $entete->email }}</small></h5>
 
-                </div>
             </div>
-            <hr>
-            @yield('content')
-            <div class="row">
-                <div class="col-md-6"></div>
-                <div class="col-md-6">
-                    <h3 class="text-primary">Liste Rendez-vous | 16-05-2021</h3>
-
-                </div>
-            </div>
-        <div class="container">
-            qsqs
         </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                @yield('title_left')
+
+
+            </div>
+            <div class="col-md-8 text-right">
+
+                @yield('title_right')
+            </div>
+        </div>
+        <div class="container">
+            @yield('content')
+        </div>
+        
     </page>
+
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->

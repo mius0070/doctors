@@ -7,10 +7,14 @@
      
         <div class="card">
             <div class="card-body">
+                <form action="{{route('doc.patients.storeOrdonnance')}}" method="POST">
+                    @csrf
+                    @method('POST')
                
                 <table class="table table-bordered table-hover table-sortable">
                     <thead>
                         <tr>
+                            
                             <th style="width: 600px;">
                                 Medicaments
                             </th>
@@ -80,10 +84,9 @@
                         </tr>
                     </tbody>
                 </table>
-                <br>
-                <br>
-                <a href="#" type="button" class="btn btn-outline-success btn-sm " style="width: 20%;" >Enregistrer</a>
                 
+                <Button type="submit" class="btn btn-outline-success btn-sm " style="width: 20%;" >Enregistrer</Button>
+            </form> 
             </div>
         </div>
 

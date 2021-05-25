@@ -281,13 +281,5 @@ class PatientsController extends Controller
     }
     return abort(404);
     }
-    public function ordonnance(){
-        $patient_id = session()->get('pat');
-        $patient = Patient::where('id',$patient_id)->first();
-        $medicaments= Medicament::all();
-        return view('patient.patients_ordonnance',[
-            'patient'=>$patient,
-            'medicaments'=>$medicaments
-            ]);
-    }
+  
 }

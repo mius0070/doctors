@@ -14,6 +14,7 @@
             <table id="example1" class="table table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th>N°</th>
                         <th style="width: 200px;">Nom & Prénom</th>
                         <th>Age</th>
                         <th >Sexe</th>
@@ -23,8 +24,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                  
+                  @php
+                      $i = 1;
+                  @endphp
                     @foreach ($patient as $item)
+                    <td>{{$i++}}</td>
                             <td>{{ $item->f_name }}&nbsp;{{ $item->l_name }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}
                                 
