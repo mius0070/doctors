@@ -38,6 +38,10 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::get('/patient/documents/analyses','DocumentsController@analyse')->name('patients.analyse');
     Route::post('/patient/documents/analyses/store','DocumentsController@storeAnalyse')->name('patients.storeAnalyse');
     Route::get('/patient/documents/analyses/show/{id}','DocumentsController@showAnalyse')->name('patients.showAnalyse');
+        // certificat medical
+    Route::get('/patient/documents/certificat_medical','DocumentsController@certificatMedical')->name('patients.certificat_medical');
+    Route::post('/patient/documents/certificat_medical/show','DocumentsController@showCertificatMedical')->name('patients.showCertificat_medical');
+
 
 
 

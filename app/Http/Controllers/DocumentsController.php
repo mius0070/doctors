@@ -137,4 +137,39 @@ class DocumentsController extends Controller
             'barcode' => $barcode
         ]);
     }
+
+    // certificat medical
+
+
+      public function certificatMedical()
+      {
+          if (session()->has('pat')) {
+            $patient_id = session()->get('pat');
+            $patient = Patient::where('id', $patient_id)->first();
+            return view('patient.patients_certificat_medical',[
+                'patient'=>$patient,
+            ]);
+          }
+          return redirect()->route('doc.index');
+      }
+      public function showCertificatMedical(Request $request)
+      {
+        $patient_id = session()->get('pat');
+        $patient_id ? null : abort(404);
+        $patient = Patient::where('id', $patient_id)->first();
+        $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+        $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
+        $entete = Entete::with('getWilaya')->first();
+        $data=[
+            'time'=>$request->time,
+            'date'=>$request->date,
+        ];
+        
+        return view('patient.documents.certificat_medical',[
+            'entete' => $entete,
+            'patient' => $patient,
+            'barcode' => $barcode,
+            'data'    =>$data
+        ]);
+      }
 }
