@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rdv;
 use Illuminate\Http\Request;
-
+use Acaronlex\LaravelCalendar\Facades\Calendar;
+use Psy\Util\Str;
 class CalendarController extends Controller
 {
     public function __construct()
@@ -17,7 +19,32 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        return view('doctor.patients_agenda');
+        $rdv = Rdv::with('getPatients')->get();
+        $events = [];
+
+       foreach($rdv as $row){
+           $events[] =Calendar::event(
+            strtoupper( $row->getPatients->f_name)." ".$row->getPatients->l_name, //event title
+               true, // full day ?
+               new \DateTime($row->date_rdv), //start time (you can also use Carbon instead of DateTime)
+               new \DateTime($row->date_rdv),
+               $row->id, //optional (event ID)
+               [
+                'url' => route('doc.patients.show',$row->patient_id)
+               ],
+           );
+       }
+        
+        
+        $calendar = Calendar::addEvents($events) //add an array with addEvents
+            ->setOptions([ //set fullcalendar options
+                'firstDay' => 1,
+                'locale'=> 'fr'
+            ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+                'viewRender' => 'function() {alert("Callbacks!");}'
+            ]);
+            
+        return view('doctor.patients_agenda',compact('calendar'));
     }
 
     /**

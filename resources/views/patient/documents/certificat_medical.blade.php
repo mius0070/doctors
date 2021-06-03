@@ -39,7 +39,7 @@
     </h5>
 
     <p>
-    <h5> Et que sont état de santé nécessite un arrêt du travail de : <strong>{{ $data['time'] }}</strong> jours</p>
+    <h5> et je déclare que son êtat de santé nécessite un arrêt du travail de : <strong>{{ $data['time'] }}</strong> jours</p>
     </h5>
     <p>
     <h5> à compter de :<strong>{{ date('d-m-Y', strtotime($data['date'])) }} </strong> sauf complications.</p>

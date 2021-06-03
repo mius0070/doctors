@@ -1,5 +1,7 @@
 <?php
 
+use Acaronlex\LaravelCalendar\Facades\Calendar;
+
 return [
 
     /*
@@ -161,6 +163,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Acaronlex\LaravelCalendar\ServiceProvider::class,
 
 
         /*
@@ -175,7 +178,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
 
     ],
 
@@ -229,6 +231,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Calendar' => Acaronlex\LaravelCalendar\Facades\Calendar::class,
+
+
        
 
     ],
