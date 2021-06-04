@@ -17,69 +17,76 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h4> {{Str::upper($patient->f_name) }}&nbsp;{{Str::upper($patient->l_name)}}</h4>
+                <h4> {{ Str::upper($patient->f_name) }}&nbsp;{{ Str::upper($patient->l_name) }}</h4>
                 <h6>{{ \Carbon\Carbon::parse($patient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}</h6>
-                <h6>{{$patient->phone}}</h6>
-                <h6>{{$patient->getWilaya->lib_wilaya}}</h6>
+                <h6>{{ $patient->phone }}</h6>
+                <h6>{{ $patient->getWilaya->lib_wilaya }}</h6>
 
             </div>
         </div>
         <div class="card">
             <div class="card-body">
-                   
-    
 
-                    <table id="example1" class="table table-bordered table-hover">
-                        <thead>
+
+
+                <table id="example1" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date RDV</th>
+                            <th>Type RDV</th>
+                            <th>Medecin</th>
+                            <th>Fait par</th>
+                            <th>Etat</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            @foreach ($rdv as $item)
+
                             <tr>
-                                <th>Date RDV</th>
-                                <th >Type RDV</th>
-                                <th>Medecin</th>
-                                <th>Fait par</th>
-                                <th>Etat</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        @foreach ($rdv as $item)
-                            <tbody>
-                                <td>{{ $item->date_rdv }}</td>
-                                <td>{{ $item->getTypeCons->lib}}</td>
-                                <td>{{ $item->getDoctor->name }}</td>
-                                <td>{{$item->made_by}}</td>
-                                <td>@switch($item)
-                                        @case($item->etat === 0)
-                                            <span class="badge bg-danger">Annulé</span>
-                                        @break
-                                        @case($item->etat === 1)
-                                            <span class="badge bg-success">Validé</span>
+                            <td>{{ $item->date_rdv }}</td>
+                            <td>{{ $item->getTypeCons->lib }}</td>
+                            <td>{{ $item->getDoctor->name }}</td>
+                            <td>{{ $item->made_by }}</td>
+                            @php
+                                $date_rdv = \Carbon\Carbon::parse($item->date_rdv);
+                            @endphp
+                            <td>@switch($item)
+                                    @case($item->etat === 0)
+                                        <span class="badge bg-danger">Annulé</span>
+                                    @break
+                                    @case($item->etat === 1 && ($date_rdv->isFuture() || $date_rdv->isToday()))
+                                        <span class="badge bg-success">en cours</span>
 
-                                        @break
-                                        @case($item->etat === 2)
-                                            <span class="badge badge-primary">en cours</span>
+                                    @break
+                                    @case($item->etat === 2)
+                                        <span class="badge badge-primary">Validé</span>
 
-                                        @break
-                                        @case($item->etat === 3)
-                                            <span class="badge badge-warning">absente</span>
+                                    @break
+                                    @case($date_rdv->isPast())
+                                        <span class="badge badge-warning">absente</span>
 
-                                        @break
-                                        @default
+                                    @break
+                                    @default
 
-                                    @endswitch
-                                </td>
-                                <td style="width: 20px;">
-                                    @if ($item->etat === 2 && $item->made_by === auth()->user()->name )
+                                @endswitch
+                            </td>
+                            <td style="width: 20px;">
+                                @if ($item->etat === 1 && $item->made_by === auth()->user()->name)
                                     <a href="{{ route('doc.rdv.cancel', $item->id) }}" data-method="DELETE"
                                         onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
                                         class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
                                         title="Supprimer">annuler</i></a>
-                                    @endif
-                                   
+                                @endif
 
-                                </td>
-                            </tbody>
-                        @endforeach
 
-                    </table>
+                            </td>
+                            </tr>
+                            @endforeach
+
+                        </tbody>
+
+                </table>
 
 
             </div>
@@ -150,11 +157,7 @@
 
             }
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        //Date picker
-        $('#reservationdate').datetimepicker({
-            format: 'L',
-            dateFormat: 'yyyy-mm-dd'
-        }).format();
+       
 
 
     });

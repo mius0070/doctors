@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Medicament;
 use App\Models\Patient;
 use App\Models\Rdv;
+use App\Models\Type_consultation;
+use App\Models\User;
 use App\Models\Wilaya;
 use Faker\Core\Barcode;
 use Faker\Provider\Barcode as ProviderBarcode;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use PhpParser\Builder\Function_;
+use PhpParser\Node\Expr\FuncCall;
 use Picqer;
 
 
@@ -124,7 +128,7 @@ class PatientsController extends Controller
         session()->put('pat', $patient->id);
         session()->put('pat_f_name', $patient->f_name);
         session()->put('pat_l_name', $patient->l_name);
-        $rdv = Rdv::where('patient_id', $id)->with('getTypeCons')->first();
+        $rdv = Rdv::where('patient_id', $id)->with('getTypeCons')->latest('created_at')->first();
         return view('patient.patients_show', [
             'patient' => $patient,
             'rdv' => $rdv
@@ -264,22 +268,82 @@ class PatientsController extends Controller
 
     public function barcode()
     {
-        if(session()->has('pat')){
+        if (session()->has('pat')) {
 
-       
+
+            $patient_id = session()->get('pat');
+            $patient = Patient::where('id', $patient_id)->first();
+            $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+            $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
+            return view(
+                'patient.patients_barcode',
+                [
+                    'patient' => $patient,
+                    'barcode' => $barcode,
+                ]
+            );
+        }
+        return abort(404);
+    }
+    // RDVs
+    public function createRDV()
+    {
+        if (session()->has('pat')) {
+            $patient_id = session()->get('pat');
+            $patient = Patient::where('id', $patient_id)->first();
+            $doctors = User::where('type', 1)->get();
+            $cons_type = Type_consultation::all();
+            return view('patient.patients_rdv', [
+                'doctors' => $doctors,
+                'cons_type' => $cons_type,
+                'patient' => $patient
+            ]);
+        }
+        return abort(404);
+    }
+
+    public function storeRDV(Request $request)
+    {
         $patient_id = session()->get('pat');
-        $patient = Patient::where('id', $patient_id)->first();
-        $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
-        return view(
-            'patient.patients_barcode',
+
+        // Validation message translate to fransh
+        $messages = [
+            'doctors.required'         => 'error',
+            'cons_type.required'         => 'error',
+            'date.required'         => 'Veuillez saisir une date de naissance',
+            'date.date_format'  => 'Format de date incorrect',
+        ];
+        // Validation 
+        $this->validate(
+            $request,
             [
-                'patient' => $patient,
-                'barcode' =>$barcode,
-            ]
+
+                'date'      => 'required|date_format:Y-m-d',
+                'cons_type'         => 'required|numeric',
+                'doctors'         => 'required|numeric',
+
+            ],
+            $messages
         );
+
+        $data = [
+            'date_rdv' => $request->date,
+            'type_cons' => $request->cons_type,
+            'patient_id' => $patient_id,
+            'user_id' => auth()->user()->id,
+            'etat' =>1,
+            'made_by'=> auth()->user()->name
+        ];
+        if($data){
+            //check if appointement alredy existe
+            $rdv =Rdv::where('patient_id',$patient_id)->where('date_rdv',$request->date)->get();
+            if($rdv->count() > 0){
+                return back()->with('error','Rendez-vous existe déja');
+            }else{
+                Rdv::insert($data);
+            }
+        }
+
+        return back()->with('success','Rendez-Vous'." $request->date");
     }
-    return abort(404);
-    }
-  
 }

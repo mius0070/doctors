@@ -19,7 +19,7 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        $rdv = Rdv::with('getPatients')->get();
+        $rdv = Rdv::where('etat',1)->with('getPatients')->get();
         $events = [];
 
        foreach($rdv as $row){

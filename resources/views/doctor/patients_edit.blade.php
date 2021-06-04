@@ -179,6 +179,9 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+            $(document).on('select2:open', () => {
+    document.querySelector('.select2-search__field').focus();
+  });
             //Datemask dd/mm/yyyy
             $('#datemask').inputmask('yyyy-mm-dd', {
                 'placeholder': 'yyyy-mm-dd'

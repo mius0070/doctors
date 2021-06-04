@@ -29,6 +29,9 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::get('/patient/gs_rdvs','PatientsController@listRdv')->name('patients.list_rdv');
     Route::get('/patient/historique','PatientsController@history')->name('patients.history');
     Route::get('/patient/barcode','PatientsController@barcode')->name('patients.barcode');
+    // Rendez vous
+    Route::get('/patient/create_rdv','PatientsController@createRDV')->name('patients.create_rdv');
+    Route::post('/patient/store_rdv','PatientsController@storeRDV')->name('patients.store_rdv');
     //documents 
         //ordonnance
     Route::get('/patient/documents/ordonnance','DocumentsController@ordonnance')->name('patients.ordonnance');

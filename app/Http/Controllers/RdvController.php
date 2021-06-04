@@ -57,13 +57,12 @@ class RdvController extends Controller
         $this->validate(
             $request,
             [
-                'date'      => 'required|date_format:d-m-Y',
+                'date'      => 'required|date_format:Y-m-d',
             ],
             $messages
         );
-        // Change date format
-       $date = Carbon::createFromFormat('d-m-Y', $request->date)->toDateString();
-
+        
+        $date=$request->date;
         $rdv=Rdv::with('getPatients')->with('getDoctor')
                 ->where('date_rdv',$date)
                 ->get();

@@ -35,9 +35,9 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                     </div>
-                                    <input name="date" type="text" class="form-control @error('date')  is-invalid @enderror"
-                                        data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy"
-                                        placeholder="jj-mm-aaaa" data-mask value="{{ old('date') }}">
+                                    <input id="datepicker" name="date" type="text" class="form-control @error('date')  is-invalid @enderror"
+                                        data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy-mm-dd"
+                                        placeholder="aaaa-mm-jj" data-mask value="{{ old('date') }}" autocomplete="off" required>
                                     @error('date')
                                         <span class="invalid-feedback" role="alert"></span>
 
@@ -60,6 +60,7 @@
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th>Date</th>
                                 <th>Code archive</th>
                                 <th style="width: 200px;">Patient</th>
                                 <th>Medecin</th>
@@ -67,43 +68,54 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        @foreach ($rdv as $item)
-                            <tbody>
-                                <td>{{ $item->getPatients->code_archive }}</td>
-                                <td>{{ $item->getPatients->f_name }}
-                                    {{ $item->getPatients->l_name }}
-                                    <br>
-                                    <small>{{ $item->getPatients->phone }}</small></td>
-                                <td>{{ $item->getDoctor->name }}</td>
-                                <td>@switch($item)
-                                        @case($item->etat === 0)
-                                            <span class="badge bg-danger">Annulé</span>
-                                        @break
-                                        @case($item->etat === 1)
-                                            <span class="badge bg-success">Validé</span>
+                        <tbody>
+                            @foreach ($rdv as $item)
 
-                                        @break
-                                        @case($item->etat === 2)
-                                            <span class="badge badge-primary">en cours</span>
+                                <tr>
+                                    <td>{{ $item->date_rdv }}</td>
+                                    <td>{{ $item->getPatients->code_archive }}</td>
+                                    <td>{{ $item->getPatients->f_name }}
+                                        {{ $item->getPatients->l_name }}
+                                        <br>
+                                        <small>{{ $item->getPatients->phone }}</small>
+                                    </td>
+                                    <td>{{ $item->getDoctor->name }}</td>
+                                    @php
+                                        $date_rdv = \Carbon\Carbon::parse($item->date_rdv);
+                                    @endphp
+                                    <td>@switch($item)
+                                            @case($item->etat === 0)
+                                                <span class="badge bg-danger">Annulé</span>
+                                            @break
+                                            @case($item->etat === 1 && ($date_rdv->isFuture() || $date_rdv->isToday()))
+                                                <span class="badge bg-success">en cours</span>
 
-                                        @break
-                                        @case($item->etat === 3)
-                                            <span class="badge badge-warning">absente</span>
+                                            @break
+                                            @case($item->etat === 2)
+                                                <span class="badge badge-primary">Validé</span>
 
-                                        @break
-                                        @default
+                                            @break
+                                            @case($date_rdv->isPast())
+                                                <span class="badge badge-warning">absente</span>
 
-                                    @endswitch
-                                </td>
-                                <td style="width: 20px;">
-                                    <a href="{{ route('doc.rdv.destroy', $item->id) }}" data-method="DELETE"
-                                        onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
-                                        class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
-                                        title="Supprimer">annuler</i></a>
+                                            @break
+                                            @default
 
-                                </td>
-                            </tbody>
-                        @endforeach
+                                        @endswitch
+                                    </td>
+                                    <td style="width: 20px;">
+                                        @if ($item->etat === 1 && $item->made_by === auth()->user()->name)
+                                        <a href="{{ route('doc.rdv.cancel', $item->id) }}" data-method="DELETE"
+                                            onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
+                                            class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                                            title="Supprimer">annuler</i></a>
+                                    @endif
+
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
 
                     </table>
                 @endif
@@ -125,11 +137,13 @@
 <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
 <!-- Tempusdominus Bootstrap 4 -->
 <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
-
+ <!-- datepicker -->
+ <link rel="stylesheet" href="{{ asset('plugins/picker/jquery-ui.css') }}">
 @endsection
 
 @section('script')
-
+<script src="{{ asset('plugins/picker/external/jquery/jquery.js') }}"></script>
+ 
 
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -147,16 +161,16 @@
 <!-- InputMask -->
 <script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
-<!-- date-range-picker -->
-<script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<!-- datepicker -->
+<script src="{{ asset('plugins/picker/jquery-ui.js') }}"></script>
 <script>
     $(function() {
 
         //Datemask dd/mm/yyyy
         $('#datemask').inputmask('yyyy-mm-dd', {
-            'placeholder': 'yyyy-mm-dd'
         })
         //Money Euro
         $('[data-mask]').inputmask()
@@ -186,11 +200,10 @@
 
             }
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        //Date picker
-        $('#reservationdate').datetimepicker({
-            format: 'L',
-            dateFormat: 'yyyy-mm-dd'
-        }).format();
+        $("#datepicker").datepicker({
+                "dateFormat": "yy-mm-dd",
+
+            });
 
 
     });
