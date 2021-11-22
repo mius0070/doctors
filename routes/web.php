@@ -32,7 +32,8 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     // Rendez vous
     Route::get('/patient/create_rdv','PatientsController@createRDV')->name('patients.create_rdv');
     Route::post('/patient/store_rdv','PatientsController@storeRDV')->name('patients.store_rdv');
-    //documents 
+    //documents
+    Route::get('/patient/documents','DocumentsController@showDocs')->name('patients.list_doc');
         //ordonnance
     Route::get('/patient/documents/ordonnance','DocumentsController@ordonnance')->name('patients.ordonnance');
     Route::post('/patient/documents/ordonnance/store','DocumentsController@storeOrdonnance')->name('patients.storeOrdonnance');
@@ -60,7 +61,7 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
         session()->forget('pat');
         return redirect('/');
     })->name('destroy.session');
-    
+
 
 });
 Route::namespace('App\Http\Controllers\Admin')->prefix('admin')->name('admin.')->middleware('admin')->group(function(){

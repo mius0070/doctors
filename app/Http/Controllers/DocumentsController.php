@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\Patient;
 use App\Models\Medicament;
 use App\Models\OrDetail;
+use App\Models\Rdv;
 use App\Models\Ordonnance;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Entete;
 use App\Models\TypeAnalyse;
+use Illuminate\Support\Carbon;
 use Exception;
 use Picqer;
 
@@ -20,6 +22,34 @@ class DocumentsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    //documents
+    public function showDocs()
+    {
+        $patient_id = session()->get('pat');
+        $patient = Patient::where('id', $patient_id)->with('getWilaya')->first();
+
+
+        // Get Ordonannces
+        $ordonnance = Ordonnance::with('getUser')
+            ->where('patient_id',$patient_id)
+            ->get();
+
+        // Get analyses
+        $analyse = Analyse::with('getUser')
+        ->where('patient_id',$patient_id)
+        ->get();
+        return view(
+            'patient.patients_list_documents',
+            [
+
+                'ordonnance' => $ordonnance,
+                'analyse' => $analyse,
+                'patient' => $patient
+            ]
+        );
+
     }
 
     //Ordonnace
@@ -164,7 +194,7 @@ class DocumentsController extends Controller
             'time'=>$request->time,
             'date'=>$request->date,
         ];
-        
+
         return view('patient.documents.certificat_medical',[
             'entete' => $entete,
             'patient' => $patient,

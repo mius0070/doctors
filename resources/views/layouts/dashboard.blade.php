@@ -156,7 +156,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{route('doc.patients.list_rdv')}}" class="nav-link ">
+                                        <a href="{{route('doc.patients.list_doc')}}" class="nav-link ">
                                             {{-- <i class="far fa-circle nav-icon"></i> --}}
                                             <p>Liste</p>
                                         </a>
@@ -191,7 +191,7 @@
                                             <p>Echographie obstétricale</p>
                                         </a>
                                     </li>
-                                    
+
                                 </ul>
                             </li>
                                 <li class="nav-item">
@@ -202,7 +202,7 @@
                                         </p>
                                     </a>
                                 </li>
-                                
+
                             @endif
                             <li class="nav-header"> <i class="nav-icon fas fa-bars"></i> &nbsp; Accueil</li>
                             <li class="nav-item">
@@ -264,8 +264,8 @@
                                             <p>Liste des patients</p>
                                         </a>
                                     </li>
-                                 
-                                    
+
+
                                 </ul>
                                 <li class="nav-item  {{ Route::is('doc.rdv.index')  ? 'menu-open' : '' }}">
                                   <a href="#" class="nav-link {{  Route::is('doc.rdv.index') ? 'active' : '' }}">
