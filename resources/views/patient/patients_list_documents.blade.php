@@ -64,12 +64,12 @@
                              </tr>
                              @endforeach
                              {{-- show Certificat Médical--}}
-                             @foreach ($analyse as $item)
+                             @foreach ($certificat_medical as $item)
                              <tr>
-                                 <td>Analyse</td>
+                                 <td>Certificat Medical</td>
                                  <td>{{$item->getUser->name}}</td>
                                  <td>{{$item->created_at}}</td>
-                                 <td>  <a href="{{route('doc.patients.showAnalyse',$item->id)}}"  type="button"
+                                 <td>  <a href="{{route('doc.patients.showCertificat_medical',$item->id)}}"  type="button"
                                      class="btn btn-outline-warning btn-sm" data-toggle="tooltip"
                                      data-placement="top" title="ouvrir"><i class="fas fa-arrow-right"></i></a></td>
 

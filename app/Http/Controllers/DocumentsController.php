@@ -13,6 +13,7 @@ use App\Models\Ordonnance;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Entete;
 use App\Models\TypeAnalyse;
+use App\Models\CerificatMedical;
 use Illuminate\Support\Carbon;
 use Exception;
 use Picqer;
@@ -40,13 +41,18 @@ class DocumentsController extends Controller
         $analyse = Analyse::with('getUser')
         ->where('patient_id',$patient_id)
         ->get();
+        // Get certificat Medical
+        $certificat_medical = CerificatMedical::with('getUser')
+        ->where('patient_id',$patient_id)
+        ->get();
         return view(
             'patient.patients_list_documents',
             [
 
                 'ordonnance' => $ordonnance,
                 'analyse' => $analyse,
-                'patient' => $patient
+                'patient' => $patient,
+                'certificat_medical' => $certificat_medical
             ]
         );
 
@@ -182,7 +188,28 @@ class DocumentsController extends Controller
           }
           return redirect()->route('doc.index');
       }
-      public function showCertificatMedical(Request $request)
+      public function storeCertificatMedical(Request $request){
+
+        if (session()->has('pat')) {
+            $user_id = Auth::id();
+            $patient_id = session()->get('pat');
+            $data = [
+                'nbr_j'=>$request->time,
+                'date'=>$request->date,
+                'user_id' => $user_id,
+                'patient_id' => $patient_id
+            ];
+
+            if($data){
+               $insert= CerificatMedical::create($data);
+
+            }
+
+           return redirect()->route('doc.patients.showCertificat_medical',$insert);
+        }
+        return redirect()->route('doc.index');
+      }
+      public function showCertificatMedical($id)
       {
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
@@ -190,16 +217,13 @@ class DocumentsController extends Controller
         $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
         $entete = Entete::with('getWilaya')->first();
-        $data=[
-            'time'=>$request->time,
-            'date'=>$request->date,
-        ];
+        $certificat = CerificatMedical::with('getUser')->find($id);
 
         return view('patient.documents.certificat_medical',[
             'entete' => $entete,
             'patient' => $patient,
             'barcode' => $barcode,
-            'data'    =>$data
+            'certificat'    =>$certificat
         ]);
       }
 }

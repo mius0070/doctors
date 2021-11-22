@@ -27,7 +27,7 @@
                     <h3 class="card-header">L'état de santé du patient nécessite un arrêt du travail de
                     </h3>
                     <div class="card-body">
-                            <form action="{{route('doc.patients.showCertificat_medical')}}" method="POST">
+                            <form action="{{route('doc.patients.storeCertificat_medical')}}" method="POST">
                                 @csrf
                                 @method('post')
 
@@ -59,8 +59,8 @@
 
                                     </div>
                                 </div>
-                              
-                                
+
+
                             </form>
 
 
