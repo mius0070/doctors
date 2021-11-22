@@ -4,17 +4,17 @@
 @section('content')
 
     <div class="container-fluid">
-     
+
         <div class="card">
             <div class="card-body">
                 <form action="{{route('doc.patients.storeOrdonnance')}}" method="POST">
                     @csrf
                     @method('POST')
-               
+
                 <table class="table table-bordered table-hover table-sortable">
                     <thead>
                         <tr>
-                            
+
                             <th style="width: 600px;">
                                 Medicaments
                             </th>
@@ -41,16 +41,16 @@
                                         @foreach ($medicaments as $item)
                                         <option value="{{$item->DCI_LIB}}" >{{$item->DCI_LIB}}</option>
                                         @endforeach
-                                            
-                                       
-            
+
+
+
                                     </select>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <input name="dosage[]" type="text" class="form-control @error('dosage[]')  is-invalid @enderror"
-                                        placeholder="" value="{{ old('dosage[]') }}">
+                                        placeholder="" value="{{ old('dosage[]') }}" required>
                                     @error('dosage[]')
                                         <span class="invalid-feedback" role="alert">
                                         </span>
@@ -60,7 +60,7 @@
                             <td>
                                 <div class="form-group">
                                     <input name="nbrpj[]" type="text" class="form-control @error('nbrpj[]')  is-invalid @enderror"
-                                        placeholder="" value="{{ old('nbrpj[]') }}">
+                                        placeholder="" value="{{ old('nbrpj[]') }}" required>
                                     @error('nbrpj[]')
                                         <span class="invalid-feedback" role="alert">
                                         </span>
@@ -70,7 +70,7 @@
                             <td>
                                 <div class="form-group">
                                     <input name="nbrj[]" type="text" class="form-control @error('nbrj[]')  is-invalid @enderror"
-                                        placeholder="" value="{{ old('nbrj[]') }}">
+                                        placeholder="" value="{{ old('nbrj[]') }}" required>
                                     @error('nbrj[]')
                                         <span class="invalid-feedback" role="alert">
                                         </span>
@@ -84,9 +84,9 @@
                         </tr>
                     </tbody>
                 </table>
-                
+
                 <Button type="submit" class="btn btn-outline-success btn-sm " style="width: 20%;" >Enregistrer</Button>
-            </form> 
+            </form>
             </div>
         </div>
 
@@ -108,7 +108,7 @@
   <!-- Select2 -->
   <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 <script>
-      
+
       $(function() {
 
 //Initialize Select2 Elements
@@ -116,7 +116,7 @@ $('.select2').select2({
 })
 
 })
-       
+
      $('#addRow').on('click', function() {
             addRow();
 
@@ -128,9 +128,9 @@ $('.select2').select2({
                 '<td><div class="form-group"><select name="medicaments[]" class="form-control select2">'+
                 '@foreach ($medicaments as $item)  <option value="{{$item->DCI_LIB}}" >{{$item->DCI_LIB}}</option> @endforeach'+
                 '</select></div>' +
-                '<td><input name="dosage[]" type="text" class="form-control @error("dosage[]" )  is-invalid @enderror" placeholder="" value="{{ old("dosage[]") }}"></td>' +
-                '<td><input name="nbrpj[]" type="text" class="form-control @error("nbrpj[]")  is-invalid @enderror" placeholder="" value="{{ old("nbrpj[]") }}">' +
-                '<td><input name="nbrj[]" type="text" class="form-control @error("nbrj[]")  is-invalid @enderror" placeholder="" value="{{ old("nbrj[]") }}">' +
+                '<td><input name="dosage[]" type="text" class="form-control @error("dosage[]" )  is-invalid @enderror" placeholder="" value="{{ old("dosage[]") }}" required></td>' +
+                '<td><input name="nbrpj[]" type="text" class="form-control @error("nbrpj[]")  is-invalid @enderror" placeholder="" value="{{ old("nbrpj[]") }}" required>' +
+                '<td><input name="nbrj[]" type="text" class="form-control @error("nbrj[]")  is-invalid @enderror" placeholder="" value="{{ old("nbrj[]") }}" required>' +
                 '<td><a href="#" type="button" class="btn btn-outline-danger btn-sm remove"><i class="fas fa-times"></i></a></td>'
                 '</th>';
 
