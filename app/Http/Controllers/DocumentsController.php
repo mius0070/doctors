@@ -105,16 +105,19 @@ class DocumentsController extends Controller
 
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
-        $patient = Patient::where('id', $patient_id)->first();
+        $ordonnance = Ordonnance::with('orDetail')
+        ->with('getUser')
+        ->with('getPatient')
+        ->findOrFail($id);
+
         $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
+        $barcode = $generator->getBarcode($ordonnance->getPatient->id, $generator::TYPE_CODE_128);
         $entete = Entete::with('getWilaya')->first();
-        $ordonnance = Ordonnance::with('orDetail')->with('getUser')->find($id);
+
 
         return view('patient.documents.ordonnance', [
             'entete' => $entete,
             'ordonnance' => $ordonnance,
-            'patient' => $patient,
             'barcode' => $barcode
         ]);
     }
@@ -160,16 +163,20 @@ class DocumentsController extends Controller
 
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
-        $patient = Patient::where('id', $patient_id)->first();
+        $analyse = Analyse::with('anaDetail')
+                            ->with('getUser')
+                            ->with('getPatient')
+                            ->findOrFail($id);
+
         $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
+        $barcode = $generator->getBarcode($analyse->getPatient->id, $generator::TYPE_CODE_128);
         $entete = Entete::with('getWilaya')->first();
-        $analyse = Analyse::with('anaDetail')->with('getUser')->find($id);
+
 
         return view('patient.documents.analyse', [
             'entete' => $entete,
             'analyse' => $analyse,
-            'patient' => $patient,
+
             'barcode' => $barcode
         ]);
     }
@@ -213,17 +220,19 @@ class DocumentsController extends Controller
       {
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
-        $patient = Patient::where('id', $patient_id)->first();
+        $certificat = CerificatMedical::with('getUser')
+                                      ->with('getPatient')
+                                      ->findOrFail($id);
+
         $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
+        $barcode = $generator->getBarcode($certificat->getPatient->id, $generator::TYPE_CODE_128);
         $entete = Entete::with('getWilaya')->first();
-        $certificat = CerificatMedical::with('getUser')->find($id);
+
 
         return view('patient.documents.certificat_medical',[
             'entete' => $entete,
-            'patient' => $patient,
             'barcode' => $barcode,
-            'certificat'    =>$certificat
+            'certificat' =>$certificat
         ]);
       }
 }

@@ -39,7 +39,7 @@
 
             body,
             page {
-             
+
                 margin: 0;
                 padding: 0;
                 box-shadow: 0;
@@ -61,12 +61,12 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
               <button class="dropdown-item" type="button" onclick="window.print()">Imprimer</button>
-              <a href="{{route('doc.patients.ordonnance')}}" class="dropdown-item" type="button">Retour</a>
+              <a href="{{route('doc.patients.list_doc')}}" class="dropdown-item" type="button">Retour</a>
             </div>
           </div>
         </center>
     <page size="A4">
-        
+
         <div class="row ">
             <div class="col-md-5 text-center">
                 <h5 class="text-primary ">{{ Str::upper($entete->titre) }}</h5>
@@ -107,7 +107,7 @@
         <div class="container">
             @yield('content')
         </div>
-        
+
     </page>
 
     <!-- jQuery -->
