@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Entete;
 use App\Models\TypeAnalyse;
 use App\Models\CerificatMedical;
+use App\Models\TypeRadio;
+use App\Models\Archive;
 use Illuminate\Support\Carbon;
 use Exception;
 use Picqer;
@@ -45,6 +47,11 @@ class DocumentsController extends Controller
         $certificat_medical = CerificatMedical::with('getUser')
         ->where('patient_id',$patient_id)
         ->get();
+        // Get radio
+        $radio = Archive::with('getUser')
+        ->with('getTypeRadio')
+        ->where('patient_id',$patient_id)
+        ->get();
         return view(
             'patient.patients_list_documents',
             [
@@ -52,7 +59,8 @@ class DocumentsController extends Controller
                 'ordonnance' => $ordonnance,
                 'analyse' => $analyse,
                 'patient' => $patient,
-                'certificat_medical' => $certificat_medical
+                'certificat_medical' => $certificat_medical,
+                'radio' => $radio
             ]
         );
 
@@ -235,4 +243,68 @@ class DocumentsController extends Controller
             'certificat' =>$certificat
         ]);
       }
+
+      // New Radio
+      public function radio()
+      {
+          if (session()->has('pat')) {
+
+            $type_radio= TypeRadio::all();
+              return view('patient.patients_new_radio', [
+                  'type_radio'=>$type_radio
+
+              ]);
+          }
+          return redirect()->route('doc.index');
+      }
+      public function storeRadio(Request $request)
+      {
+          if (session()->has('pat')) {
+            $patient_id = session()->get('pat');
+
+             // Validation message translate to fransh
+        $messages = [
+
+            'img.required' => 'Veuillez choisir une image.',
+            'img.image'    => 'Le ficher doit être une image.',
+            'img.mimes'    => 'L\'image doit être un fichier de type : jpeg, png, jpg.',
+
+
+        ];
+        // Validation
+        $this->validate(
+            $request,
+            [
+                'typeradio'     => 'required',
+                'img'           => 'required|image|mimes:jpeg,png,jpg|max:2048',
+
+            ],
+            $messages
+        );
+
+        if($request->file('img')){
+            $file_extension = $request->file('img')->getClientOriginalExtension();
+            $file_name = time()."-".$patient_id.".".$file_extension;
+            $path= 'dist'.'\\'.'img'.'\\'.'radio'.'\\';
+            $file_path = $request->img->move(public_path($path),$file_name);
+        }
+
+        $data = [
+            'img_url'=>$path.$file_name,
+            'note'=>$request->note,
+            'type_radio_id'=>$request->typeradio,
+            'user_id' => Auth::user()->id,
+            'patient_id' => $patient_id
+        ];
+        if($data){
+
+            Archive::insert($data);
+
+        }
+        return redirect()->route('doc.patients.list_doc');
+
+          }
+          return redirect()->route('doc.index');
+      }
+
 }

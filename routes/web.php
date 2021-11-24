@@ -46,6 +46,9 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::get('/patient/documents/certificat_medical','DocumentsController@certificatMedical')->name('patients.certificat_medical');
     Route::post('/patient/documents/certificat_medical/sotre','DocumentsController@storeCertificatMedical')->name('patients.storeCertificat_medical');
     Route::get('/patient/documents/certificat_medical/show/{id}','DocumentsController@showCertificatMedical')->name('patients.showCertificat_medical');
+        //radio
+    Route::get('/patient/documents/radio','DocumentsController@radio')->name('patients.radio');
+    Route::post('/patient/documents/radio/store','DocumentsController@storeRadio')->name('patients.storeRadio');
 
 
 

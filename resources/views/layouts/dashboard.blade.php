@@ -21,10 +21,11 @@
 <body class="hold-transition sidebar-mini">
     <!-- Site wrapper -->
     <div class="wrapper">
-      <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
-  </div>
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60"
+                width="60">
+        </div>
 
         {{-- navbar --}}
         @include('layouts.navbar')
@@ -47,7 +48,7 @@
                         <span class="fas fa-user-md fa-2x text-white"></span>
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block"> {{auth()->user()->name}}</a>
+                        <a href="#" class="d-block"> {{ auth()->user()->name }}</a>
                     </div>
                 </div>
 
@@ -73,9 +74,11 @@
                         @section('menu')
                             @if (request()->session()->has('pat'))
 
-                            <li class="nav-header"> <i class="nav-icon fas fa-folder-open"></i> &nbsp; Dossier du patient </li>
+                                <li class="nav-header"> <i class="nav-icon fas fa-folder-open"></i> &nbsp; Dossier du
+                                    patient </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('doc.patients.show', session()->get('pat')) }}" class="nav-link">
+                                    <a href="{{ route('doc.patients.show', session()->get('pat')) }}"
+                                        class="nav-link">
                                         <i class="nav-icon fas fa-user"></i>
                                         <p>
                                             {{ Str::upper(session()->get('pat_f_name')) }}
@@ -84,7 +87,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('doc.patients.barcode')}}" class="nav-link">
+                                    <a href="{{ route('doc.patients.barcode') }}" class="nav-link">
                                         <i class="nav-icon fas fa-barcode"></i>
                                         <p>
                                             Code barre
@@ -92,7 +95,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('doc.patients.history')}}" class="nav-link">
+                                    <a href="{{ route('doc.patients.history') }}" class="nav-link">
                                         <i class="nav-icon fas fa-history"></i>
                                         <p>
                                             Historique
@@ -109,91 +112,98 @@
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
-                                            <a href="{{route('doc.patients.create_rdv')}}" class="nav-link ">
+                                            <a href="{{ route('doc.patients.create_rdv') }}" class="nav-link ">
                                                 {{-- <i class="far fa-circle nav-icon"></i> --}}
                                                 <p>Nouveau</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{route('doc.patients.list_rdv')}}" class="nav-link ">
+                                            <a href="{{ route('doc.patients.list_rdv') }}" class="nav-link ">
                                                 {{-- <i class="far fa-circle nav-icon"></i> --}}
                                                 <p>Liste</p>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="#" class="nav-link">
-                                      <i class="nav-icon fas fa-stethoscope"></i>
-                                      <p>
-                                          Consultations
-                                          <i class="fas fa-angle-left right"></i>
-                                      </p>
-                                  </a>
-                                  <ul class="nav nav-treeview">
-                                      <li class="nav-item">
-                                          <a href="#" class="nav-link ">
-                                              {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                              <p>Nouveau</p>
-                                          </a>
-                                      </li>
-                                      <li class="nav-item">
-                                          <a href="#" class="nav-link ">
-                                              {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                              <p>Liste</p>
-                                          </a>
-                                      </li>
-                                  </ul>
-                              </li>
-                              <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-copy"></i>
-                                    <p>
-                                        Document
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{route('doc.patients.list_doc')}}" class="nav-link ">
-                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                            <p>Liste</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{route('doc.patients.ordonnance')}}" class="nav-link ">
-                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                            <p>ordonnance</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{route('doc.patients.analyse')}}" class="nav-link ">
-                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                            <p>Analyse</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{route('doc.patients.certificat_medical')}}" class="nav-link ">
-                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                            <p>Certificat médical</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link ">
-                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                            <p>Compte-rendu</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link ">
-                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                            <p>Echographie obstétricale</p>
-                                        </a>
-                                    </li>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-stethoscope"></i>
+                                        <p>
+                                            Consultations
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Nouveau</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Liste</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-copy"></i>
+                                        <p>
+                                            Document
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('doc.patients.radio') }}" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Nouveau Radio</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('doc.patients.list_doc') }}" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Liste</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('doc.patients.ordonnance') }}" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>ordonnance</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('doc.patients.analyse') }}" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Analyse</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('doc.patients.certificat_medical') }}"
+                                                class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Certificat médical</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Compte-rendu</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ">
+                                                {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                                <p>Echographie obstétricale</p>
+                                            </a>
+                                        </li>
 
-                                </ul>
-                            </li>
+                                    </ul>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{ route('doc.destroy.session') }}" class="nav-link active bg-danger">
                                         <i class="nav-icon fas fa-times-circle"></i>
@@ -224,7 +234,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('doc.patients.salle') }}" class="nav-link {{ Route::is('doc.patients.salle') ? 'active' : '' }}">
+                                <a href="{{ route('doc.patients.salle') }}"
+                                    class="nav-link {{ Route::is('doc.patients.salle') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-clock"></i>
                                     <p>
                                         Salle d'attente
@@ -233,7 +244,8 @@
 
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('doc.calendar.index')}}" class="nav-link {{ Route::is('doc.calendar.index') ? 'active' : '' }}">
+                                <a href="{{ route('doc.calendar.index') }}"
+                                    class="nav-link {{ Route::is('doc.calendar.index') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-calendar-alt "></i>
                                     <p>
                                         Agedna
@@ -241,8 +253,10 @@
                                 </a>
 
                             </li>
-                            <li class="nav-item  {{ Route::is('doc.patients.index') || Route::is('doc.patients.create') ? 'menu-open' : '' }}">
-                                <a href="#" class="nav-link {{ Route::is('doc.patients.index')|| Route::is('doc.patients.create') ? 'active' : '' }}">
+                            <li
+                                class="nav-item  {{ Route::is('doc.patients.index') || Route::is('doc.patients.create') ? 'menu-open' : '' }}">
+                                <a href="#"
+                                    class="nav-link {{ Route::is('doc.patients.index') || Route::is('doc.patients.create') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p>
                                         Patients
@@ -267,24 +281,24 @@
 
 
                                 </ul>
-                                <li class="nav-item  {{ Route::is('doc.rdv.index')  ? 'menu-open' : '' }}">
-                                  <a href="#" class="nav-link {{  Route::is('doc.rdv.index') ? 'active' : '' }}">
-                                      <i class="nav-icon fas fa-user"></i>
-                                      <p>
-                                          Rendez-vous
-                                          <i class="fas fa-angle-left right"></i>
-                                      </p>
-                                  </a>
-                                  <ul class="nav nav-treeview">
+                            <li class="nav-item  {{ Route::is('doc.rdv.index') ? 'menu-open' : '' }}">
+                                <a href="#" class="nav-link {{ Route::is('doc.rdv.index') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>
+                                        Rendez-vous
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                      <a href="{{ route('doc.rdv.index') }}"
-                                          class="nav-link {{ request()->segment(2) == 'rdv' ? 'active' : '' }}">
-                                          {{-- <i class="far fa-circle nav-icon"></i> --}}
-                                          <p>Liste RDV/JOUR</p>
-                                      </a>
-                                  </li>
-                                  </ul>
-                                </li>
+                                        <a href="{{ route('doc.rdv.index') }}"
+                                            class="nav-link {{ request()->segment(2) == 'rdv' ? 'active' : '' }}">
+                                            {{-- <i class="far fa-circle nav-icon"></i> --}}
+                                            <p>Liste RDV/JOUR</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             </li>
                         @show
 
@@ -309,7 +323,8 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="{{ route('doc.index') }}">Tableau de bord</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('doc.index') }}">Tableau de bord</a>
+                                </li>
                                 <li class="breadcrumb-item active">@yield('page_name')</li>
                             </ol>
                         </div>

@@ -61,6 +61,7 @@
                         <thead>
                             <tr>
                                 <th>Date</th>
+                                <th>Type</th>
                                 <th>Code archive</th>
                                 <th style="width: 200px;">Patient</th>
                                 <th>Medecin</th>
@@ -73,6 +74,7 @@
 
                                 <tr>
                                     <td>{{ $item->date_rdv }}</td>
+                                    <td>{{ $item->getTypeCons->lib }}</td>
                                     <td>{{ $item->getPatients->code_archive }}</td>
                                     <td>{{ $item->getPatients->f_name }}
                                         {{ $item->getPatients->l_name }}
@@ -104,7 +106,7 @@
                                         @endswitch
                                     </td>
                                     <td style="width: 20px;">
-                                        @if ($item->etat === 1 && $item->made_by === auth()->user()->name)
+                                        @if ($item->etat === 1 && $item->made_by === auth()->user()->name && ($date_rdv->isFuture() || $date_rdv->isToday()))
                                         <a href="{{ route('doc.rdv.cancel', $item->id) }}" data-method="DELETE"
                                             onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
                                             class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
@@ -143,7 +145,7 @@
 
 @section('script')
 <script src="{{ asset('plugins/picker/external/jquery/jquery.js') }}"></script>
- 
+
 
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
