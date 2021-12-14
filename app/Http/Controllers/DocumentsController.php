@@ -94,11 +94,11 @@ class DocumentsController extends Controller
                     //
                     $data = [
                         'med_lib'       => $request->medicaments[$item],
-                        'dosage'        => $request->dosage[$item],
                         'nbr_p_j'       => $request->nbrpj[$item],
                         'nbr_j'         => $request->nbrj[$item],
                         'ordonnance_id' => $lastinsert->id,
                     ];
+
 
                     OrDetail::insert($data);
                 }

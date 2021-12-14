@@ -11,10 +11,9 @@ class OrDetail extends Model
     protected $table= 'or_details';
     protected $fillable= [
         'med_lib',
-        'dosage',
         'nbr_p_j',
         'nbr_j',
         'ordonnance_id'
- 
+
      ];
 }

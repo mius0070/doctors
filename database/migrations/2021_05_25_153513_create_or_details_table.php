@@ -17,11 +17,10 @@ class CreateOrDetailsTable extends Migration
         Schema::create('or_details', function (Blueprint $table) {
             $table->id();
             $table->string('med_lib');
-            $table->string('dosage');
             $table->string('nbr_p_j');
             $table->string('nbr_j');
             $table->integer('ordonnance_id');
-       
+
         });
     }
 

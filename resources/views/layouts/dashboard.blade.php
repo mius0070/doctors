@@ -300,6 +300,16 @@
                                 </ul>
                             </li>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('doc.medicaments.index') }}"
+                                    class="nav-link {{ Route::is('doc.medicaments.index') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-first-aid"></i>
+                                    <p>
+                                        Medicaments
+                                    </p>
+                                </a>
+
+                            </li>
                         @show
 
 

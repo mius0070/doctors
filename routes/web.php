@@ -24,6 +24,7 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::resource('/','HomeController');
     Route::get('/print','HomeController@print')->name('print');
     Route::resource('/patients','PatientsController');
+    Route::resource('/medicaments','MedicamentController');
     Route::get('/patients/{patient}/del','PatientsController@destroy')->name('patients.del');
     Route::get('/patient/salle','PatientsController@salle')->name('patients.salle');
     Route::get('/patient/gs_rdvs','PatientsController@listRdv')->name('patients.list_rdv');
