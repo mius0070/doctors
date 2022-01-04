@@ -39,7 +39,7 @@ class SearchController extends Controller
      */
     public function store(Request $request)
     {
-        // search 
+        // search
         switch ($request) {
             case !empty($request->f_name):
                 $find = Patient::where('f_name', 'like', $request->f_name . '%')->get();
@@ -51,14 +51,14 @@ class SearchController extends Controller
                 $find = Patient::where('code_archive', $request->code_archive)->get();
                 break;
             default:$find = Patient::where('code_archive', $request->code_archive)->get();
-            
+
         }
 
         return back()->with('success', $find);
     }
 
     /**
-     * Display the specified resource.  
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

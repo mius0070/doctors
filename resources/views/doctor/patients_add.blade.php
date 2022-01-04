@@ -11,6 +11,13 @@
             {{ $message }}
         </div>
     @endif
+    @if ($message = Session::get('err'))
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> Erreur de création</h5>
+            {{ $message }}
+        </div>
+    @endif
     {{-- alert message from error default --}}
     @if ($errors->any())
         <div class="alert alert-warning alert-dismissible ">
@@ -190,7 +197,6 @@
 
 
         })
-
     </script>
 
 @endsection

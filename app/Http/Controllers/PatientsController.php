@@ -80,7 +80,7 @@ class PatientsController extends Controller
 
 
         ];
-        // Validation 
+        // Validation
         $this->validate(
             $request,
             [
@@ -109,9 +109,19 @@ class PatientsController extends Controller
             'code_archive' => $request->code_archive,
             'user_id' => auth()->user()->id,
         ];
+        $patient= Patient::where('f_name',$request->f_name)
+                            ->where('l_name',$request->l_name)
+                            ->where('birthday',$birthday)
+                            ->exists();
+        if($patient == true){
+            return back()->with('err', 'Patient existe déjà');
+        }elseif($patient == false){
         if ($data)
             Patient::create($data);
-        return back()->with('success', 'Vous avez ajouté un patient avec succès');
+            return back()->with('success', 'Vous avez ajouté un patient avec succès');
+
+        }
+
     }
 
     /**
@@ -182,7 +192,7 @@ class PatientsController extends Controller
 
 
         ];
-        // Validation 
+        // Validation
         $this->validate(
             $request,
             [
@@ -313,7 +323,7 @@ class PatientsController extends Controller
             'date.required'         => 'Veuillez saisir une date de naissance',
             'date.date_format'  => 'Format de date incorrect',
         ];
-        // Validation 
+        // Validation
         $this->validate(
             $request,
             [
