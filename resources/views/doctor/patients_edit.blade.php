@@ -11,6 +11,13 @@
             {{ $message }}
         </div>
     @endif
+    @if ($message = Session::get('err'))
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> Erreur de modification</h5>
+            {{ $message }}
+        </div>
+    @endif
     {{-- alert message from error default --}}
     @if ($errors->any())
         <div class="alert alert-warning alert-dismissible ">
@@ -27,7 +34,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
-                    <form method="POST" action="{{ route('doc.patients.update',$patient->id) }}">
+                    <form method="POST" action="{{ route('doc.patients.update', $patient->id) }}">
                         @csrf
                         {{ method_field('PUT') }}
                         <div class="form-group">
@@ -52,19 +59,17 @@
                             <label>Sexe</label>
 
                             <div class="custom-control custom-radio">
-                                <input name="gender" value="1"  class="custom-control-input custom-control-input-info "
-                                    type="radio" id="customRadio4" name="customRadio2" {{
-                                    $patient->gender===1 ? 'checked' : ''
-                                    }}>
+                                <input name="gender" value="1" class="custom-control-input custom-control-input-info "
+                                    type="radio" id="customRadio4" name="customRadio2"
+                                    {{ $patient->gender === 1 ? 'checked' : '' }}>
                                 <label for="customRadio4" class="custom-control-label">Homme</label>
-                                
+
                             </div>
                             <div class="custom-control custom-radio">
-                                <input name="gender" value="2" 
+                                <input name="gender" value="2"
                                     class="custom-control-input custom-control-input-info custom-control-input-outline"
-                                    type="radio" id="customRadio5" name="customRadio2"  {{
-                                        $patient->gender===2 ? 'checked' : ''
-                                        }}>
+                                    type="radio" id="customRadio5" name="customRadio2"
+                                    {{ $patient->gender === 2 ? 'checked' : '' }}>
                                 <label for="customRadio5" class="custom-control-label">Femme </label>
 
                             </div>
@@ -92,14 +97,14 @@
                         <label>Groupe sanguin</label>
                         <select name="group_sang" class="form-control select2 @error('group_sang')  is-invalid @enderror"
                             style="width: 100%;">
-                            <option value="O+"{{$patient->group_sang=='O+' ? 'selected' : ''}}>O+</option>
-                            <option value="O-"{{$patient->group_sang=='O-' ? 'selected' : ''}}>O-</option>
-                            <option value="B+"{{$patient->group_sang=='B+' ? 'selected' : ''}}>B+</option>
-                            <option value="B-"{{$patient->group_sang=='B-' ? 'selected' : ''}}>B-</option>
-                            <option value="A+"{{$patient->group_sang=='A+' ? 'selected' : ''}}>A+</option>
-                            <option value="A-"{{$patient->group_sang=='A-' ? 'selected' : ''}}>A-</option>
-                            <option value="AB+"{{$patient->group_sang=='AB+' ? 'selected' : ''}}>AB+</option>
-                            <option value="AB-"{{$patient->group_sang=='AB-' ? 'selected' : ''}}>AB-</option>
+                            <option value="O+" {{ $patient->group_sang == 'O+' ? 'selected' : '' }}>O+</option>
+                            <option value="O-" {{ $patient->group_sang == 'O-' ? 'selected' : '' }}>O-</option>
+                            <option value="B+" {{ $patient->group_sang == 'B+' ? 'selected' : '' }}>B+</option>
+                            <option value="B-" {{ $patient->group_sang == 'B-' ? 'selected' : '' }}>B-</option>
+                            <option value="A+" {{ $patient->group_sang == 'A+' ? 'selected' : '' }}>A+</option>
+                            <option value="A-" {{ $patient->group_sang == 'A-' ? 'selected' : '' }}>A-</option>
+                            <option value="AB+" {{ $patient->group_sang == 'AB+' ? 'selected' : '' }}>AB+</option>
+                            <option value="AB-" {{ $patient->group_sang == 'AB-' ? 'selected' : '' }}>AB-</option>
 
 
                         </select>
@@ -113,7 +118,8 @@
                     <div class="form-group">
                         <label>Téléphone</label>
                         <input name="phone" type="text" class="form-control @error('phone')  is-invalid @enderror"
-                            placeholder="Téléphone" value="{{ $patient->phone }} " data-inputmask="&quot;mask&quot;: &quot;9999999999&quot;" data-mask="" im-insert="true">
+                            placeholder="Téléphone" value="{{ $patient->phone }} "
+                            data-inputmask="&quot;mask&quot;: &quot;9999999999&quot;" data-mask="" im-insert="true">
                         @error('phone')
                             <span class="invalid-feedback" role="alert"></span>
                         @enderror
@@ -122,7 +128,9 @@
                         <label>Wilaya</label>
                         <select name="wilaya" class="form-control select2" style="width: 100%;">
                             @foreach ($wilaya as $item)
-                                <option value="{{ $item->id }}" {{$item->id==$patient->wilaya ? 'selected' : ''}}>{{ $item->lib_wilaya }}</option>
+                                <option value="{{ $item->id }}"
+                                    {{ $item->id == $patient->wilaya ? 'selected' : '' }}>
+                                    {{ $item->lib_wilaya }}</option>
                             @endforeach
 
                         </select>
@@ -131,7 +139,8 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label>Adresse</label>
-                        <input type="text" class="form-control" placeholder="Adresse" name="adresse" value="{{ $patient->adresse }}">
+                        <input type="text" class="form-control" placeholder="Adresse" name="adresse"
+                            value="{{ $patient->adresse }}">
                     </div>
                     <div class="form-group">
                         <label>Code archive</label>
@@ -180,8 +189,8 @@
                 theme: 'bootstrap4'
             })
             $(document).on('select2:open', () => {
-    document.querySelector('.select2-search__field').focus();
-  });
+                document.querySelector('.select2-search__field').focus();
+            });
             //Datemask dd/mm/yyyy
             $('#datemask').inputmask('yyyy-mm-dd', {
                 'placeholder': 'yyyy-mm-dd'
@@ -191,7 +200,6 @@
 
 
         })
-
     </script>
 
 @endsection

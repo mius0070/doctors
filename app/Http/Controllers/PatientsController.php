@@ -76,6 +76,7 @@ class PatientsController extends Controller
             'phone.numeric'         => 'Le numéro téléphone doit être un nombre',
             'code_archive.required' => 'Veuillez saisir un code archive',
             'code_archive.numeric'  => 'Le code archive doit être un nombre',
+            'code_archive.unique'  => 'Le code archive déjà été prise',
 
 
 
@@ -188,6 +189,7 @@ class PatientsController extends Controller
             'phone.numeric'         => 'Le numéro téléphone doit être un nombre',
             'code_archive.required' => 'Veuillez saisir un code archive',
             'code_archive.numeric'  => 'Le code archive doit être un nombre',
+            'code_archive.unique'  => 'Le code archive déjà été prise',
 
 
 
@@ -201,7 +203,7 @@ class PatientsController extends Controller
                 'birthday'      => 'required|date_format:d-m-Y',
                 'group_sang'    => 'required',
                 'phone'         => 'required|numeric',
-                'code_archive'  => 'required|numeric',
+                'code_archive'  => 'required|numeric|unique:patients,code_archive,'.$id,
             ],
             $messages
         );
@@ -221,6 +223,8 @@ class PatientsController extends Controller
             'code_archive' => $request->code_archive,
             'user_id' => auth()->user()->id,
         ];
+
+
         $update = Patient::where('id', $id);
         $update->update($data);
         return back()->with('success', 'Vous avez modifier les informations du patient avec succès');
