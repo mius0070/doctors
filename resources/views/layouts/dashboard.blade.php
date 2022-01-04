@@ -87,6 +87,15 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ route('doc.patients.edit', session()->get('pat')) }}"
+                                        class="nav-link">
+                                        <i class="nav-icon far fa-edit"></i>
+                                        <p>
+                                            Editer Patient
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('doc.patients.barcode') }}" class="nav-link">
                                         <i class="nav-icon fas fa-barcode"></i>
                                         <p>
