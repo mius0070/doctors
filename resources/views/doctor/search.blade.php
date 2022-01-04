@@ -71,25 +71,28 @@
                                     <th>Code archive</th>
                                 </tr>
                             </thead>
-                            @foreach ($find as $item)
 
-                                <tbody>
-                                    <td><a
-                                            href="{{ route('doc.patients.show', $item->id) }}">{{ $item->f_name }}&nbsp;{{ $item->l_name }}</a>
-                                    </td>
-                                    <td>{{ $item->birthday }}</td>
-                                    <td>
 
-                                        {{ $item->gender == 1 ? 'Homme' : null }}
-                                        {{ $item->gender == 2 ? 'Femme' : null }}
-                                        {{ $item->gender == 3 ? 'Garçon' : null }}
-                                        {{ $item->gender == 4 ? 'Fille' : null }}
-                                    </td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->code_archive }}</td>
+                            <tbody>
+                                @foreach ($find as $item)
+                                    <tr>
+                                        <td><a
+                                                href="{{ route('doc.patients.show', $item->id) }}">{{ $item->f_name }}&nbsp;{{ $item->l_name }}</a>
+                                        </td>
+                                        <td>{{ $item->birthday }}</td>
+                                        <td>
 
-                                </tbody>
-                            @endforeach
+                                            {{ $item->gender == 1 ? 'Homme' : null }}
+                                            {{ $item->gender == 2 ? 'Femme' : null }}
+                                            {{ $item->gender == 3 ? 'Garçon' : null }}
+                                            {{ $item->gender == 4 ? 'Fille' : null }}
+                                        </td>
+                                        <td>{{ $item->phone }}</td>
+                                        <td>{{ $item->code_archive }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+
 
 
                         </table>

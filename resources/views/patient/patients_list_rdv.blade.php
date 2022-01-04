@@ -40,51 +40,51 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                        <tbody>
-                            @foreach ($rdv as $item)
+                    <tbody>
+                        @foreach ($rdv as $item)
 
                             <tr>
-                            <td>{{ $item->date_rdv }}</td>
-                            <td>{{ $item->getTypeCons->lib }}</td>
-                            <td>{{ $item->getDoctor->name }}</td>
-                            <td>{{ $item->made_by }}</td>
-                            @php
-                                $date_rdv = \Carbon\Carbon::parse($item->date_rdv);
-                            @endphp
-                            <td>@switch($item)
-                                    @case($item->etat === 0)
-                                        <span class="badge bg-danger">Annulé</span>
-                                    @break
-                                    @case($item->etat === 1 && ($date_rdv->isFuture() || $date_rdv->isToday()))
-                                        <span class="badge bg-success">en cours</span>
+                                <td>{{ $item->date_rdv }}</td>
+                                <td>{{ $item->getTypeCons->lib }}</td>
+                                <td>{{ $item->getDoctor->name }}</td>
+                                <td>{{ $item->made_by }}</td>
+                                @php
+                                    $date_rdv = \Carbon\Carbon::parse($item->date_rdv);
+                                @endphp
+                                <td>@switch($item)
+                                        @case($item->etat === 0)
+                                            <span class="badge bg-danger">Annulé</span>
+                                        @break
+                                        @case($item->etat === 1 && ($date_rdv->isFuture() || $date_rdv->isToday()))
+                                            <span class="badge bg-success">en cours</span>
 
-                                    @break
-                                    @case($item->etat === 2)
-                                        <span class="badge badge-primary">Validé</span>
+                                        @break
+                                        @case($item->etat === 2)
+                                            <span class="badge badge-primary">Validé</span>
 
-                                    @break
-                                    @case($date_rdv->isPast())
-                                        <span class="badge badge-warning">absente</span>
+                                        @break
+                                        @case($date_rdv->isPast())
+                                            <span class="badge badge-warning">absente</span>
 
-                                    @break
-                                    @default
+                                        @break
+                                        @default
 
-                                @endswitch
-                            </td>
-                            <td style="width: 20px;">
-                                @if ($item->etat === 1 && $item->made_by === auth()->user()->name)
-                                    <a href="{{ route('doc.rdv.cancel', $item->id) }}" data-method="DELETE"
-                                        onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
-                                        class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
-                                        title="Supprimer">annuler</i></a>
-                                @endif
+                                    @endswitch
+                                </td>
+                                <td style="width: 20px;">
+                                    @if ($item->etat === 1 && ($date_rdv->isFuture() || $date_rdv->isToday()) && $item->made_by === auth()->user()->name)
+                                        <a href="{{ route('doc.rdv.cancel', $item->id) }}" data-method="DELETE"
+                                            onclick="return confirm('Voulez vous vraiment supprimer ce compte?')"
+                                            type="submit" class="btn btn-outline-danger btn-sm" data-toggle="tooltip"
+                                            data-placement="top" title="Supprimer">annuler</i></a>
+                                    @endif
 
 
-                            </td>
+                                </td>
                             </tr>
-                            @endforeach
+                        @endforeach
 
-                        </tbody>
+                    </tbody>
 
                 </table>
 
@@ -97,70 +97,69 @@
 @endsection
 @section('style')
 
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 @endsection
 
 @section('script')
 
 
-<!-- DataTables  & Plugins -->
-<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-<!-- InputMask -->
-<script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
-<script src="{{ asset('/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
-<script>
-    $(function() {
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- InputMask -->
+    <script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
+    <script>
+        $(function() {
 
-        //Datemask dd/mm/yyyy
-        $('#datemask').inputmask('yyyy-mm-dd', {
-            'placeholder': 'yyyy-mm-dd'
-        })
-        //Money Euro
-        $('[data-mask]').inputmask()
-        $("#example1").DataTable({
+            //Datemask dd/mm/yyyy
+            $('#datemask').inputmask('yyyy-mm-dd', {
+                'placeholder': 'yyyy-mm-dd'
+            })
+            //Money Euro
+            $('[data-mask]').inputmask()
+            $("#example1").DataTable({
 
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "language": {
-                "search": "Recherche : ",
-                "oPaginate": {
-                    "sFirst": "Premier",
-                    "sPrevious": "Pr&eacute;c&eacute;dent",
-                    "sNext": "Suivant",
-                    "sLast": "Dernier"
-                },
-                "sProcessing": "Traitement en cours...",
-                "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
-                "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
-                "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-                "sInfoPostFix": "",
-                "sLoadingRecords": "Chargement en cours...",
-                "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
-
-
-            }
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-       
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "language": {
+                    "search": "Recherche : ",
+                    "oPaginate": {
+                        "sFirst": "Premier",
+                        "sPrevious": "Pr&eacute;c&eacute;dent",
+                        "sNext": "Suivant",
+                        "sLast": "Dernier"
+                    },
+                    "sProcessing": "Traitement en cours...",
+                    "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
+                    "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                    "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+                    "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Chargement en cours...",
+                    "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                    "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
 
 
-    });
+                }
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-</script>
+
+
+        });
+    </script>
 @endsection

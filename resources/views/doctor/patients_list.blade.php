@@ -17,41 +17,43 @@
                         <th>N°</th>
                         <th style="width: 200px;">Nom & Prénom</th>
                         <th>Age</th>
-                        <th >Sexe</th>
+                        <th>Sexe</th>
                         <th>Wilaya</th>
                         <th>Code archive</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                  @php
-                      $i = 1;
-                  @endphp
+                    @php
+                        $i = 1;
+                    @endphp
                     @foreach ($patient as $item)
-                    <td>{{$i++}}</td>
+                        <tr>
+                            <td>{{ $i++ }}</td>
                             <td>{{ $item->f_name }}&nbsp;{{ $item->l_name }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}
-                                
+
                             </td>
-                            <td>@if ($item->gender === 1 )
-                                Homme
-                            @elseif($item->gender === 2)
-                                Femme
-                            @endif</td>
-                            <td>{{$item->getWilaya->lib_wilaya}} </td>
-                            <td>{{$item->code_archive}}</td>
+                            <td>
+                                @if ($item->gender === 1)
+                                    Homme
+                                @elseif($item->gender === 2)
+                                    Femme
+                                @endif
+                            </td>
+                            <td>{{ $item->getWilaya->lib_wilaya }} </td>
+                            <td>{{ $item->code_archive }}</td>
                             <td style="width: 120px;">
-                                <a href="{{route('doc.patients.del',$item->id)}}"
-                                    data-method="DELETE"
-                                    onclick="return confirm('Voulez vous vraiment supprimer ce compte?')"
-                                    type="submit" class="btn btn-outline-danger btn-sm" data-toggle="tooltip"
-                                    data-placement="top" title="Supprimer"><i class="far fa-trash-alt"></i></a>
-                                <a href="{{route('doc.patients.edit',$item->id)}}"  type="button"
-                                    class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
-                                    data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
-                                    <a href="{{route('doc.patients.show',$item->id)}}"  type="button"
-                                        class="btn btn-outline-warning btn-sm" data-toggle="tooltip"
-                                        data-placement="top" title="ouvrir"><i class="fas fa-arrow-right"></i></a>
+                                <a href="{{ route('doc.patients.del', $item->id) }}" data-method="DELETE"
+                                    onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
+                                    class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                                    title="Supprimer"><i class="far fa-trash-alt"></i></a>
+                                <a href="{{ route('doc.patients.edit', $item->id) }}" type="button"
+                                    class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top"
+                                    title="Modifier"><i class="far fa-edit"></i></a>
+                                <a href="{{ route('doc.patients.show', $item->id) }}" type="button"
+                                    class="btn btn-outline-warning btn-sm" data-toggle="tooltip" data-placement="top"
+                                    title="ouvrir"><i class="fas fa-arrow-right"></i></a>
                             </td>
                         </tr>
 
@@ -91,8 +93,8 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script>
         $(function() {
-           $("#example1").DataTable({
-               
+            $("#example1").DataTable({
+
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
@@ -113,12 +115,11 @@
                     "sLoadingRecords": "Chargement en cours...",
                     "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
                     "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
-                    
+
 
                 }
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            
-        });
 
+        });
     </script>
 @endsection
