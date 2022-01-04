@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use App\Models\Rdv;
+use App\Models\Type_consultation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -20,9 +21,11 @@ class RdvController extends Controller
      */
     public function index()
     {
-       
 
-       return view('doctor.patients_list_rdv');
+        $cons_type = Type_consultation::all();
+
+
+       return view('doctor.patients_list_rdv',compact('cons_type'));
 
     }
 
@@ -48,27 +51,30 @@ class RdvController extends Controller
         $messages = [
             'date.required'     => 'Veuillez saisir une date ',
             'date.date_format'  => 'Format de date incorrect',
-           
+            'cons_type'         => 'veuillez sélectionner un type de consultation'
 
 
-            
+
+
         ];
-        // Validation 
+        // Validation
         $this->validate(
             $request,
             [
                 'date'      => 'required|date_format:Y-m-d',
+                'cons_type' => 'required'
             ],
             $messages
         );
-        
+
         $date=$request->date;
-        $rdv=Rdv::with('getPatients')->with('getDoctor')
+        $rdv=Rdv::with('getPatients')->with('getDoctor')->with('getTypeCons')
                 ->where('date_rdv',$date)
+                ->where('type_cons',$request->cons_type)
                 ->get();
-        
-        
-        return back()->with('success',$rdv);
+
+
+        return back()->with('success',$rdv,)->withInput();
     }
 
     /**
@@ -113,7 +119,7 @@ class RdvController extends Controller
      */
     public function destroy($id)
     {
-        
+
         $update=Rdv::where('id',$id);
         $data=[
             'etat'=>0,
