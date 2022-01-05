@@ -24,77 +24,131 @@
 
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
+        <!-- ./row -->
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <div class="card card-primary card-tabs">
+                    <div class="card-header p-0 pt-1">
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill"
+                                    href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home"
+                                    aria-selected="true">Documents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill"
+                                    href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile"
+                                    aria-selected="false">Radios</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="custom-tabs-one-tabContent">
+                            <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel"
+                                aria-labelledby="custom-tabs-one-home-tab">
+                                <table id="example1" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Type document</th>
+                                            <th>Medecin</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- show ordonannce --}}
+                                        @foreach ($ordonnance as $item)
+                                            <tr>
+                                                <td>ordonnance</td>
+                                                <td>{{ $item->getUser->name }}</td>
+                                                <td>{{ $item->created_at }}</td>
+                                                <td> <a href="{{ route('doc.patients.showOrdonnance', $item->id) }}"
+                                                        type="button" class="btn btn-outline-warning btn-sm"
+                                                        data-toggle="tooltip" data-placement="top" title="ouvrir"><i
+                                                            class="fas fa-eye"></i></a></td>
+
+                                            </tr>
+                                        @endforeach
+                                        {{-- show analyses --}}
+                                        @foreach ($analyse as $item)
+                                            <tr>
+                                                <td>Analyse</td>
+                                                <td>{{ $item->getUser->name }}</td>
+                                                <td>{{ $item->created_at }}</td>
+                                                <td> <a href="{{ route('doc.patients.showAnalyse', $item->id) }}"
+                                                        type="button" class="btn btn-outline-warning btn-sm"
+                                                        data-toggle="tooltip" data-placement="top" title="ouvrir"><i
+                                                            class="fas fa-eye"></i></a></td>
+
+                                            </tr>
+                                        @endforeach
+                                        {{-- show Certificat Médical --}}
+                                        @foreach ($certificat_medical as $item)
+                                            <tr>
+                                                <td>Certificat Medical</td>
+                                                <td>{{ $item->getUser->name }}</td>
+                                                <td>{{ $item->created_at }}</td>
+                                                <td> <a href="{{ route('doc.patients.showCertificat_medical', $item->id) }}"
+                                                        type="button" class="btn btn-outline-warning btn-sm"
+                                                        data-toggle="tooltip" data-placement="top" title="ouvrir"><i
+                                                            class="fas fa-eye"></i></a></td>
+
+                                            </tr>
+                                        @endforeach
+                                        {{-- show Certificat Médical --}}
 
 
 
-                <table id="example1" class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Type document</th>
-                            <th>Medecin</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- show ordonannce --}}
-                        @foreach ($ordonnance as $item)
-                            <tr>
-                                <td>ordonnance</td>
-                                <td>{{ $item->getUser->name }}</td>
-                                <td>{{ $item->created_at }}</td>
-                                <td> <a href="{{ route('doc.patients.showOrdonnance', $item->id) }}" type="button"
-                                        class="btn btn-outline-warning btn-sm" data-toggle="tooltip" data-placement="top"
-                                        title="ouvrir"><i class="fas fa-arrow-right"></i></a></td>
+                                    </tbody>
 
-                            </tr>
-                        @endforeach
-                        {{-- show analyses --}}
-                        @foreach ($analyse as $item)
-                            <tr>
-                                <td>Analyse</td>
-                                <td>{{ $item->getUser->name }}</td>
-                                <td>{{ $item->created_at }}</td>
-                                <td> <a href="{{ route('doc.patients.showAnalyse', $item->id) }}" type="button"
-                                        class="btn btn-outline-warning btn-sm" data-toggle="tooltip" data-placement="top"
-                                        title="ouvrir"><i class="fas fa-arrow-right"></i></a></td>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel"
+                                aria-labelledby="custom-tabs-one-profile-tab">
+                                <div class="container">
+                                    <div class="row">
+                                        @foreach ($radio as $item)
 
-                            </tr>
-                        @endforeach
-                        {{-- show Certificat Médical --}}
-                        @foreach ($certificat_medical as $item)
-                            <tr>
-                                <td>Certificat Medical</td>
-                                <td>{{ $item->getUser->name }}</td>
-                                <td>{{ $item->created_at }}</td>
-                                <td> <a href="{{ route('doc.patients.showCertificat_medical', $item->id) }}"
-                                        type="button" class="btn btn-outline-warning btn-sm" data-toggle="tooltip"
-                                        data-placement="top" title="ouvrir"><i class="fas fa-arrow-right"></i></a></td>
+                                            <div class="col-md-4">
+                                                <div class="card text-center">
 
-                            </tr>
-                        @endforeach
-                        {{-- show Certificat Médical --}}
-                        @foreach ($radio as $item)
-                            <tr>
-                                <td>{{ $item->getTypeRadio->lib_radio }}</td>
-                                <td>{{ $item->getUser->name }}</td>
-                                <td>{{ $item->created_at }}</td>
-                                <td> <a href="{{ route('doc.patients.showCertificat_medical', $item->id) }}"
-                                        type="button" class="btn btn-outline-warning btn-sm" data-toggle="tooltip"
-                                        data-placement="top" title="ouvrir"><i class="fas fa-arrow-right"></i></a></td>
+                                                    <a href="{{ asset($item->img_url) }}" target="_blank">
+                                                        <img class="card-img-top" width="400" height="400"
+                                                            src="{{ asset($item->img_url) }}" alt="Fjords"
+                                                            style="width:100%">
+                                                    </a>
 
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-
-                </table>
+                                                    <div class="card-header">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <h3 class="card-title mb-0 right badge badge-success">
+                                                                {{ $item->getTypeRadio->lib_radio }}
+                                                            </h3>
+                                                            <h6>{{ $item->created_at }}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p class="card-text">{{ $item->note }}</p>
+                                                    </div>
 
 
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+            <!-- /.card -->
         </div>
+    </div>
+
+    </div>
 
     </div>
 
