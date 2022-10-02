@@ -33,12 +33,14 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill"
                                     href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home"
-                                    aria-selected="true">Documents &nbsp; <span class="badge rounded-pill  badge-success">{{ $doc_count }}</span></a>
+                                    aria-selected="true">Documents &nbsp; <span
+                                        class="badge rounded-pill  badge-success">{{ $doc_count }}</span></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill"
                                     href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile"
-                                    aria-selected="false">Radios &nbsp; <span class="badge rounded-pill  badge-success">{{ $radio->count() }}</span></a>
+                                    aria-selected="false">Radios &nbsp; <span
+                                        class="badge rounded-pill  badge-success">{{ $radio->count() }}</span></a>
                             </li>
 
                         </ul>
@@ -60,7 +62,7 @@
                                         {{-- show ordonannce --}}
                                         @foreach ($ordonnance as $item)
                                             <tr>
-                                                <td>ordonnance</td>
+                                                <td>Ordonnance</td>
                                                 <td>{{ $item->getUser->name }}</td>
                                                 <td>{{ $item->created_at }}</td>
                                                 <td> <a href="{{ route('doc.patients.showOrdonnance', $item->id) }}"
@@ -108,8 +110,7 @@
                                 aria-labelledby="custom-tabs-one-profile-tab">
                                 <div class="container">
                                     <div class="row">
-                                        @foreach ($radio as $item)
-
+                                        @forelse($radio as $item)
                                             <div class="col-md-4">
                                                 <div class="card text-center">
 
@@ -134,7 +135,16 @@
 
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                        <div class="col">
+                                            <div class="alert alert-warning alert-dismissible ">
+                                                <ul style="list-style: none;">
+                                                        <li class="text-center">Aucune donnée disponible </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        @endforelse
                                     </div>
                                 </div>
 
