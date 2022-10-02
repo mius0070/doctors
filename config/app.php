@@ -179,6 +179,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //barcode generator
+        Milon\Barcode\BarcodeServiceProvider::class,
+
+
     ],
 
     /*
@@ -232,9 +236,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Calendar' => Acaronlex\LaravelCalendar\Facades\Calendar::class,
+        //barcode generator
+        'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
 
 
-       
+
 
     ],
 

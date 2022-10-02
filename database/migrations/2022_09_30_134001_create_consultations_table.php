@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 
-class CreateTypeRadiosTable extends Migration
+class CreateConsultationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,9 +15,11 @@ class CreateTypeRadiosTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_radios', function (Blueprint $table) {
+        Schema::create('consultations', function (Blueprint $table) {
             $table->id();
-            $table->string('lib_radio');
+            $table->integer('patient_id');
+            $table->integer('user_id');
+            $table->integer('type_cons');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
@@ -30,6 +32,6 @@ class CreateTypeRadiosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_radios');
+        Schema::dropIfExists('consultations');
     }
 }

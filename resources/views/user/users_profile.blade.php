@@ -32,7 +32,7 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label>Identifiat</label>
+                                <label>Identifiant</label>
                                 <input name="user" type="text" class="form-control @error('user')  is-invalid @enderror"
                                     placeholder="user"  value="{{ $user->username }}" disabled>
 

@@ -44,10 +44,8 @@ class MedicamentController extends Controller
     {
          // Validation message translate to fransh
          $messages = [
-            'code.required'       => 'Veuillez saisir un code',
             'med.required'       => 'Veuillez saisir un nom',
             'dosage.required'     => 'Veuillez saisir un dosage',
-            'prix.required'   => 'Veuillez choisir un prix',
 
 
 
@@ -57,10 +55,8 @@ class MedicamentController extends Controller
         $this->validate(
             $request,
             [
-                'code'        => 'required',
                 'med'        => 'required',
                 'dosage'      => 'required',
-                'prix'    => 'required',
 
             ],
             $messages
@@ -68,15 +64,13 @@ class MedicamentController extends Controller
 
 
       $data=[
-          'DCI_COD'=>$request->code,
           'DCI_LIB'=>$request->med,
           'DCI_SPEC'=>$request->dosage,
-          'DCI_PU'=>$request->prix,
 
       ];
       if($data)
       Medicament::create($data);
-      return back()->with('success', 'Vous avez ajouté un medicament avec succès');
+      return back()->with('success', 'Vous avez ajouté un médicament avec succès');
     }
 
     /**
@@ -119,8 +113,12 @@ class MedicamentController extends Controller
      * @param  \App\Models\Medicament  $medicament
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Medicament $medicament)
+    public function destroy($id)
     {
-        //
+         //delete medicament
+         $medicament = Medicament::find($id);
+         $medicament->delete();
+
+         return back()->with('del','Vous-avez supprimé un médicament');
     }
 }

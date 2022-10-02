@@ -18,7 +18,7 @@ use App\Models\TypeRadio;
 use App\Models\Archive;
 use Illuminate\Support\Carbon;
 use Exception;
-use Picqer;
+
 
 class DocumentsController extends Controller
 {
@@ -36,22 +36,24 @@ class DocumentsController extends Controller
 
         // Get Ordonannces
         $ordonnance = Ordonnance::with('getUser')
-            ->where('patient_id',$patient_id)
+            ->where('patient_id', $patient_id)
             ->get();
 
         // Get analyses
         $analyse = Analyse::with('getUser')
-        ->where('patient_id',$patient_id)
-        ->get();
+            ->where('patient_id', $patient_id)
+            ->get();
         // Get certificat Medical
         $certificat_medical = CerificatMedical::with('getUser')
-        ->where('patient_id',$patient_id)
-        ->get();
+            ->where('patient_id', $patient_id)
+            ->get();
         // Get radio
         $radio = Archive::with('getUser')
-        ->with('getTypeRadio')
-        ->where('patient_id',$patient_id)
-        ->get();
+            ->with('getTypeRadio')
+            ->where('patient_id', $patient_id)
+            ->get();
+        //count document
+        $doc_count =$certificat_medical->count() + $analyse->count() + $ordonnance->count();
         return view(
             'patient.patients_list_documents',
             [
@@ -60,10 +62,10 @@ class DocumentsController extends Controller
                 'analyse' => $analyse,
                 'patient' => $patient,
                 'certificat_medical' => $certificat_medical,
-                'radio' => $radio
+                'radio' => $radio,
+                'doc_count' =>$doc_count
             ]
         );
-
     }
 
     //Ordonnace
@@ -78,6 +80,7 @@ class DocumentsController extends Controller
         }
         return redirect()->route('doc.index');
     }
+
     public function storeOrdonnance(Request $request)
     {
         if (session()->has('pat')) {
@@ -114,12 +117,11 @@ class DocumentsController extends Controller
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
         $ordonnance = Ordonnance::with('orDetail')
-        ->with('getUser')
-        ->with('getPatient')
-        ->findOrFail($id);
+            ->with('getUser')
+            ->with('getPatient')
+            ->findOrFail($id);
 
-        $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($ordonnance->getPatient->id, $generator::TYPE_CODE_128);
+        $barcode = $ordonnance->getPatient->id;
         $entete = Entete::with('getWilaya')->first();
 
 
@@ -136,7 +138,7 @@ class DocumentsController extends Controller
     {
         if (session()->has('pat')) {
             $analyse = TypeAnalyse::all();
-            return view('patient.patients_analyses',[
+            return view('patient.patients_analyses', [
                 'analyse' => $analyse
             ]);
         }
@@ -152,17 +154,17 @@ class DocumentsController extends Controller
                 'patient_id' => $patient_id
             ];
             $lastinsert = Analyse::create($data);
-                if(count($request->analyse) > 0){
-                    foreach($request->analyse as $item => $v ){
-                        $data=[
-                            'ana_lib' => $request->analyse[$item],
-                            'analyse_id'=>$lastinsert->id
-                        ];
+            if (count($request->analyse) > 0) {
+                foreach ($request->analyse as $item => $v) {
+                    $data = [
+                        'ana_lib' => $request->analyse[$item],
+                        'analyse_id' => $lastinsert->id
+                    ];
 
-                        AnaDetail::insert($data);
-                    }
+                    AnaDetail::insert($data);
                 }
-           return redirect()->route('doc.patients.showAnalyse', $lastinsert);
+            }
+            return redirect()->route('doc.patients.showAnalyse', $lastinsert);
         }
         return redirect()->route('doc.index');
     }
@@ -172,12 +174,11 @@ class DocumentsController extends Controller
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
         $analyse = Analyse::with('anaDetail')
-                            ->with('getUser')
-                            ->with('getPatient')
-                            ->findOrFail($id);
+            ->with('getUser')
+            ->with('getPatient')
+            ->findOrFail($id);
 
-        $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($analyse->getPatient->id, $generator::TYPE_CODE_128);
+        $barcode = $analyse->getPatient->id;
         $entete = Entete::with('getWilaya')->first();
 
 
@@ -192,119 +193,115 @@ class DocumentsController extends Controller
     // certificat medical
 
 
-      public function certificatMedical()
-      {
-          if (session()->has('pat')) {
+    public function certificatMedical()
+    {
+        if (session()->has('pat')) {
             $patient_id = session()->get('pat');
             $patient = Patient::where('id', $patient_id)->first();
-            return view('patient.patients_certificat_medical',[
-                'patient'=>$patient,
+            return view('patient.patients_certificat_medical', [
+                'patient' => $patient,
             ]);
-          }
-          return redirect()->route('doc.index');
-      }
-      public function storeCertificatMedical(Request $request){
+        }
+        return redirect()->route('doc.index');
+    }
+    public function storeCertificatMedical(Request $request)
+    {
 
         if (session()->has('pat')) {
             $user_id = Auth::id();
             $patient_id = session()->get('pat');
             $data = [
-                'nbr_j'=>$request->time,
-                'date'=>$request->date,
+                'nbr_j' => $request->time,
+                'date' => $request->date,
                 'user_id' => $user_id,
                 'patient_id' => $patient_id
             ];
 
-            if($data){
-               $insert= CerificatMedical::create($data);
-
+            if ($data) {
+                $insert = CerificatMedical::create($data);
             }
 
-           return redirect()->route('doc.patients.showCertificat_medical',$insert);
+            return redirect()->route('doc.patients.showCertificat_medical', $insert);
         }
         return redirect()->route('doc.index');
-      }
-      public function showCertificatMedical($id)
-      {
+    }
+    public function showCertificatMedical($id)
+    {
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
         $certificat = CerificatMedical::with('getUser')
-                                      ->with('getPatient')
-                                      ->findOrFail($id);
+            ->with('getPatient')
+            ->findOrFail($id);
 
-        $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-        $barcode = $generator->getBarcode($certificat->getPatient->id, $generator::TYPE_CODE_128);
+        $barcode = $certificat->getPatient->id;
         $entete = Entete::with('getWilaya')->first();
 
 
-        return view('patient.documents.certificat_medical',[
+        return view('patient.documents.certificat_medical', [
             'entete' => $entete,
             'barcode' => $barcode,
-            'certificat' =>$certificat
+            'certificat' => $certificat
         ]);
-      }
+    }
 
-      // New Radio
-      public function radio()
-      {
-          if (session()->has('pat')) {
+    // New Radio
+    public function radio()
+    {
+        if (session()->has('pat')) {
 
-            $type_radio= TypeRadio::all();
-              return view('patient.patients_new_radio', [
-                  'type_radio'=>$type_radio
+            $type_radio = TypeRadio::all();
+            return view('patient.patients_new_radio', [
+                'type_radio' => $type_radio
 
-              ]);
-          }
-          return redirect()->route('doc.index');
-      }
-      public function storeRadio(Request $request)
-      {
-          if (session()->has('pat')) {
+            ]);
+        }
+        return redirect()->route('doc.index');
+    }
+    public function storeRadio(Request $request)
+    {
+        if (session()->has('pat')) {
             $patient_id = session()->get('pat');
 
-             // Validation message translate to fransh
-        $messages = [
+            // Validation message translate to fransh
+            $messages = [
 
-            'img.required' => 'Veuillez choisir une image.',
-            'img.image'    => 'Le ficher doit être une image.',
-            'img.mimes'    => 'L\'image doit être un fichier de type : jpeg, png, jpg.',
+                'img.required' => 'Veuillez choisir une image.',
+                'img.image'    => 'Le ficher doit être une image.',
+                'img.mimes'    => 'L\'image doit être un fichier de type : jpeg, png, jpg.',
 
 
-        ];
-        // Validation
-        $this->validate(
-            $request,
-            [
-                'typeradio'     => 'required',
-                'img'           => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            ];
+            // Validation
+            $this->validate(
+                $request,
+                [
+                    'typeradio'     => 'required',
+                    'img'           => 'required|image|mimes:jpeg,png,jpg|max:2048',
 
-            ],
-            $messages
-        );
+                ],
+                $messages
+            );
 
-        if($request->file('img')){
-            $file_extension = $request->file('img')->getClientOriginalExtension();
-            $file_name = time()."-".$patient_id.".".$file_extension;
-            $path= 'dist'.'\\'.'img'.'\\'.'radio'.'\\';
-            $file_path = $request->img->move(public_path($path),$file_name);
+            if ($request->file('img')) {
+                $file_extension = $request->file('img')->getClientOriginalExtension();
+                $file_name = time() . "-" . $patient_id . "." . $file_extension;
+                $path = 'dist' . '\\' . 'img' . '\\' . 'radio' . '\\';
+                $file_path = $request->img->move(public_path($path), $file_name);
+            }
+
+            $data = [
+                'img_url' => $path . $file_name,
+                'note' => $request->note,
+                'type_radio_id' => $request->typeradio,
+                'user_id' => Auth::user()->id,
+                'patient_id' => $patient_id
+            ];
+            if ($data) {
+
+                Archive::insert($data);
+            }
+            return redirect()->route('doc.patients.list_doc');
         }
-
-        $data = [
-            'img_url'=>$path.$file_name,
-            'note'=>$request->note,
-            'type_radio_id'=>$request->typeradio,
-            'user_id' => Auth::user()->id,
-            'patient_id' => $patient_id
-        ];
-        if($data){
-
-            Archive::insert($data);
-
-        }
-        return redirect()->route('doc.patients.list_doc');
-
-          }
-          return redirect()->route('doc.index');
-      }
-
+        return redirect()->route('doc.index');
+    }
 }

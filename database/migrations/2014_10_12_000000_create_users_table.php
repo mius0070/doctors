@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('service');
             $table->tinyInteger('role');
             $table->tinyInteger('is_visible')->default(1);
+            $table->string('remember_token')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

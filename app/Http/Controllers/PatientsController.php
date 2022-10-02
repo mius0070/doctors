@@ -8,14 +8,15 @@ use App\Models\Rdv;
 use App\Models\Type_consultation;
 use App\Models\User;
 use App\Models\Wilaya;
-use Faker\Core\Barcode;
-use Faker\Provider\Barcode as ProviderBarcode;
+
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use PhpParser\Builder\Function_;
 use PhpParser\Node\Expr\FuncCall;
-use Picqer;
+
+
+
 
 
 
@@ -110,19 +111,17 @@ class PatientsController extends Controller
             'code_archive' => $request->code_archive,
             'user_id' => auth()->user()->id,
         ];
-        $patient= Patient::where('f_name',$request->f_name)
-                            ->where('l_name',$request->l_name)
-                            ->where('birthday',$birthday)
-                            ->exists();
-        if($patient == true){
+        $patient = Patient::where('f_name', $request->f_name)
+            ->where('l_name', $request->l_name)
+            ->where('birthday', $birthday)
+            ->exists();
+        if ($patient == true) {
             return back()->with('err', 'Patient existe déjà');
-        }elseif($patient == false){
-        if ($data)
-            Patient::create($data);
+        } elseif ($patient == false) {
+            if ($data)
+                Patient::create($data);
             return back()->with('success', 'Vous avez ajouté un patient avec succès');
-
         }
-
     }
 
     /**
@@ -203,7 +202,7 @@ class PatientsController extends Controller
                 'birthday'      => 'required|date_format:d-m-Y',
                 'group_sang'    => 'required',
                 'phone'         => 'required|numeric',
-                'code_archive'  => 'required|numeric|unique:patients,code_archive,'.$id,
+                'code_archive'  => 'required|numeric|unique:patients,code_archive,' . $id,
             ],
             $messages
         );
@@ -287,13 +286,12 @@ class PatientsController extends Controller
 
             $patient_id = session()->get('pat');
             $patient = Patient::where('id', $patient_id)->first();
-            $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-            $barcode = $generator->getBarcode($patient_id, $generator::TYPE_CODE_128);
+
             return view(
                 'patient.patients_barcode',
                 [
                     'patient' => $patient,
-                    'barcode' => $barcode,
+
                 ]
             );
         }
@@ -345,19 +343,19 @@ class PatientsController extends Controller
             'type_cons' => $request->cons_type,
             'patient_id' => $patient_id,
             'user_id' => auth()->user()->id,
-            'etat' =>1,
-            'made_by'=> auth()->user()->name
+            'etat' => 1,
+            'made_by' => auth()->user()->name
         ];
-        if($data){
+        if ($data) {
             //check if appointement alredy existe
-            $rdv =Rdv::where('patient_id',$patient_id)->where('date_rdv',$request->date)->get();
-            if($rdv->count() > 0){
-                return back()->with('error','Rendez-vous existe déja');
-            }else{
+            $rdv = Rdv::where('patient_id', $patient_id)->where('date_rdv', $request->date)->get();
+            if ($rdv->count() > 0) {
+                return back()->with('error', 'Rendez-vous existe déja');
+            } else {
                 Rdv::insert($data);
             }
         }
 
-        return back()->with('success','Rendez-Vous'." $request->date");
+        return back()->with('success', 'Rendez-Vous' . " $request->date");
     }
 }

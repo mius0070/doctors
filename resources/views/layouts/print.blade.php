@@ -29,7 +29,8 @@
             display: block;
             margin: 0 auto;
             box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
-            padding: 15px;
+            padding: 16px;
+
 
         }
 
@@ -42,9 +43,11 @@
 
                 margin: 0;
                 padding: 0;
-                box-shadow: 0;
+                box-shadow: none;
             }
-            .dropdown ,.dropdown *{
+
+            .dropdown,
+            .dropdown * {
                 visibility: hidden;
             }
         }
@@ -54,17 +57,18 @@
 </head>
 
 <body>
-    <center >
+    <center>
         <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Option
+            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Option
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <button class="dropdown-item" type="button" onclick="window.print()">Imprimer</button>
-              <a href="{{route('doc.patients.list_doc')}}" class="dropdown-item" type="button">Retour</a>
+                <button class="dropdown-item" type="button" onclick="window.print()">Imprimer</button>
+                <a href="{{ route('doc.patients.list_doc') }}" class="dropdown-item" type="button">Retour</a>
             </div>
-          </div>
-        </center>
+        </div>
+    </center>
     <page size="A4">
 
         <div class="row ">
@@ -78,7 +82,8 @@
                     style="opacity: .8">
             </div>
             <div class="col-md-5 text-right">
-                <h5> <small class="">{{ $entete->adresse }} - {{ $entete->getWilaya->lib_wilaya }}</small></h5>
+                <h5> <small class="">{{ $entete->adresse }} -
+                        {{ $entete->getWilaya->lib_wilaya }}</small></h5>
                 <h5> <small class="">
                         @if ($entete->phone != null)
                             Tél: {{ $entete->phone }}
@@ -104,9 +109,9 @@
                 @yield('title_right')
             </div>
         </div>
-        <div class="container">
-            @yield('content')
-        </div>
+
+        @yield('content')
+
 
     </page>
 

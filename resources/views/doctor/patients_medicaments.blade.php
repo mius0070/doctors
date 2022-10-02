@@ -1,13 +1,21 @@
 @extends('layouts.dashboard')
 @section('full_name', 'CHIBANE Mourad')
-@section('page_title', 'Medicaments')
-@section('page_name', 'Liste des medicaments')
+@section('page_title', 'Médicaments')
+@section('page_name', 'Liste des médicaments')
 @section('content')
     {{-- alert message from session --}}
     @if ($message = Session::get('success'))
         <div class="alert alert-success alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h5><i class="icon fas fa-check"></i> Création réussie</h5>
+            {{ $message }}
+        </div>
+    @endif
+    {{-- alert message from session --}}
+    @if ($message = Session::get('del'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check"></i> Suppression réussie</h5>
             {{ $message }}
         </div>
     @endif
@@ -37,10 +45,8 @@
                 <thead>
                     <tr>
                         <th>N°</th>
-                        <th>Code</th>
                         <th style="width: 200px;">Medicament</th>
                         <th>Dosage</th>
-                        <th>Prix</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -49,18 +55,15 @@
                         $i = 1;
                     @endphp
                     @foreach ($medicament as $item)
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $item->DCI_COD }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->DCI_LIB }}</td>
                         <td>{{ $item->DCI_SPEC }}</td>
-                        <td>{{ $item->DCI_PU }}</td>
                         <td style="width: 120px;">
-                            <a href="#" data-method="DELETE"
-                                onclick="return confirm('Voulez vous vraiment supprimer ce compte?')" type="submit"
+                            <a href="{{ route('doc.medicament.del',$item->id) }}" data-method="DELETE"
+                                onclick="return confirm('Voulez vous vraiment supprimer le medicament?')" type="submit"
                                 class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top"
                                 title="Supprimer"><i class="far fa-trash-alt"></i></a>
-                            <a href="#" type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip"
-                                data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
+
 
                         </td>
                         </tr>
@@ -85,15 +88,7 @@
                         <form action="{{ route('doc.medicaments.store') }}" method="POST">
                             @csrf
                             @method('POST')
-                            <div class="form-group">
-                                <label>Code</label>
-                                <input name="code" type="text" class="form-control @error('code')  is-invalid @enderror"
-                                    placeholder="Code" value="{{ old('code') }}" required>
-                                @error('code')
-                                    <span class="invalid-feedback" role="alert">
-                                    </span>
-                                @enderror
-                            </div>
+
                             <div class="form-group">
                                 <label>Medicament</label>
                                 <input name="med" type="text" class="form-control @error('med')  is-invalid @enderror"
@@ -112,16 +107,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label>Prix</label>
-                                <input name="prix" value="0.00" type="text"
-                                    class="form-control @error('prix')  is-invalid @enderror" placeholder="Prix"
-                                    value="{{ old('prix') }}" required>
-                                @error('prix')
-                                    <span class="invalid-feedback" role="alert">
-                                    </span>
-                                @enderror
-                            </div>
+
 
 
                     </div>

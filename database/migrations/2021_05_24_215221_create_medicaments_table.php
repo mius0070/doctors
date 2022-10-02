@@ -16,10 +16,8 @@ class CreateMedicamentsTable extends Migration
     {
         Schema::create('medicaments', function (Blueprint $table) {
             $table->id();
-            $table->string('DCI_COD',5);
             $table->string('DCI_LIB');
-            $table->string('DCI_SPEC',30);
-            $table->string('DCI_PU',20);
+            $table->string('DCI_SPEC');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

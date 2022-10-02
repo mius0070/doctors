@@ -3,11 +3,12 @@
 @section('title_left')
     <div class="card">
         <div class="card-body text-center">
-            <b> {{ Str::upper($certificat->getPatient->l_name) }} &nbsp; {{ Str::upper($certificat->getPatient->f_name) }}</b>
+            <b> {{ Str::upper($certificat->getPatient->l_name) }} &nbsp;
+                {{ Str::upper($certificat->getPatient->f_name) }}</b>
             <br>
             <b>{{ \Carbon\Carbon::parse($certificat->getPatient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}</b>
             <br>
-            <img src="data:image/png;base64,{{ base64_encode($barcode) }} ">
+            <center>{!! DNS1D::getBarcodeSVG($barcode, 'C128', 2, 50, 'black', true) !!}</center>
             <br>
             <small>CA: {{ $certificat->getPatient->code_archive }}</small>
         </div>
@@ -31,7 +32,8 @@
     </p>
 
     <p>
-    <h5>Mr, Mlle, Mme :<b> {{ Str::upper($certificat->getPatient->l_name) }} &nbsp; {{ Str::upper($certificat->getPatient->f_name) }}</b></h5>
+    <h5>Mr, Mlle, Mme :<b> {{ Str::upper($certificat->getPatient->l_name) }} &nbsp;
+            {{ Str::upper($certificat->getPatient->f_name) }}</b></h5>
     </p>
 
     <p>
@@ -39,7 +41,8 @@
     </h5>
 
     <p>
-    <h5> et je déclare que son êtat de santé nécessite un arrêt du travail de : <strong>{{ $certificat->nbr_j }}</strong> jours</p>
+    <h5> et je déclare que son êtat de santé nécessite un arrêt du travail de : <strong>{{ $certificat->nbr_j }}</strong>
+        jours</p>
     </h5>
     <p>
     <h5> à compter de :<strong>{{ date('d-m-Y', strtotime($certificat->date)) }} </strong> sauf complications.</p>

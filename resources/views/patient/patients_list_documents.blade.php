@@ -33,12 +33,12 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill"
                                     href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home"
-                                    aria-selected="true">Documents</a>
+                                    aria-selected="true">Documents &nbsp; <span class="badge rounded-pill  badge-success">{{ $doc_count }}</span></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill"
                                     href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile"
-                                    aria-selected="false">Radios</a>
+                                    aria-selected="false">Radios &nbsp; <span class="badge rounded-pill  badge-success">{{ $radio->count() }}</span></a>
                             </li>
 
                         </ul>

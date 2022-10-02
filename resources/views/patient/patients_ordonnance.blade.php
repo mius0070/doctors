@@ -16,7 +16,7 @@
                             <tr>
 
                                 <th style="width: 600px;">
-                                    Medicaments
+                                    Médicaments
                                 </th>
 
                                 <th>

@@ -8,7 +8,7 @@
             <br>
             <b>{{ \Carbon\Carbon::parse($ordonnance->getPatient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}</b>
             <br>
-            <img src="data:image/png;base64,{{ base64_encode($barcode) }} ">
+            <center>{!! DNS1D::getBarcodeSVG($barcode, 'C128', 2, 50, 'black', true) !!}</center>
             <br>
             <small>CA: {{ $ordonnance->getPatient->code_archive }}</small>
         </div>
