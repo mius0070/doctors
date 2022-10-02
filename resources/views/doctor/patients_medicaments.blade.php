@@ -51,9 +51,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $i = 1;
-                    @endphp
+
                     @foreach ($medicament as $item)
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->DCI_LIB }}</td>
