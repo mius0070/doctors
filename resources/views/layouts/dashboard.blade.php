@@ -319,6 +319,16 @@
                                 </a>
 
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('doc.analyses.index') }}"
+                                    class="nav-link {{ Route::is('doc.analyses.index') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-flask"></i>
+                                    <p>
+                                        Type analyse
+                                    </p>
+                                </a>
+
+                            </li>
                         @show
 
 

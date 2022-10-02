@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Medicament;
+use App\Models\TypeAnalyse;
 use Illuminate\Http\Request;
 
-class MedicamentController extends Controller
+class AnalyseController extends Controller
 {
     public function __construct()
     {
@@ -18,12 +18,11 @@ class MedicamentController extends Controller
      */
     public function index()
     {
-        $medicament = Medicament::all();
-        return view('doctor.patients_medicaments', [
-            'medicament' => $medicament,
+        $analyses = TypeAnalyse::orderBy('id','DESC')->get();
+        return view('doctor.patients_analyses', [
+            'analyses' => $analyses,
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -42,21 +41,15 @@ class MedicamentController extends Controller
      */
     public function store(Request $request)
     {
-         // Validation message translate to fransh
-         $messages = [
-            'med.required'       => 'Le champ ne peut pas être vide',
-            'dosage.required'     => 'Le champ ne peut pas être vide',
-
-
-
-
+           // Validation message translate to fransh
+           $messages = [
+            'ana.required'       => 'Le champ ne peut pas être vide',
         ];
         // Validation
         $this->validate(
             $request,
             [
-                'med'        => 'required',
-                'dosage'      => 'required',
+                'ana'        => 'required',
 
             ],
             $messages
@@ -64,22 +57,21 @@ class MedicamentController extends Controller
 
 
       $data=[
-          'DCI_LIB'=>$request->med,
-          'DCI_SPEC'=>$request->dosage,
+          'lib_ana'=>$request->ana,
 
       ];
       if($data)
-      Medicament::create($data);
-      return back()->with('success', 'Vous avez ajouté un médicament avec succès');
+      TypeAnalyse::create($data);
+      return back()->with('success',"Vous avez ajouté un type d'analyse avec succès");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Medicament  $medicament
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Medicament $medicament)
+    public function show($id)
     {
         //
     }
@@ -87,10 +79,10 @@ class MedicamentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Medicament  $medicament
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Medicament $medicament)
+    public function edit($id)
     {
         //
     }
@@ -99,10 +91,10 @@ class MedicamentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Medicament  $medicament
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Medicament $medicament)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -110,15 +102,15 @@ class MedicamentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Medicament  $medicament
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
          //delete medicament
-         $medicament = Medicament::find($id);
+         $medicament = TypeAnalyse::find($id);
          $medicament->delete();
 
-         return back()->with('del','Vous-avez supprimé un médicament');
+         return back()->with('del',"Vous-avez supprimé un type d'analyse");
     }
 }
