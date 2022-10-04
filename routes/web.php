@@ -44,10 +44,13 @@ Route::namespace('App\Http\Controllers')->prefix('doc')->name('doc.')->middlewar
     Route::get('/patient/documents/ordonnance','DocumentsController@ordonnance')->name('patients.ordonnance');
     Route::post('/patient/documents/ordonnance/store','DocumentsController@storeOrdonnance')->name('patients.storeOrdonnance');
     Route::get('/patient/documents/ordonnance/show/{id}','DocumentsController@showOrdonnance')->name('patients.showOrdonnance');
+    Route::post('/patient/documents/ordonnance/show/','DocumentsController@prepareOrdonnance')->name('patients.prepareOrdonnance');
         //analyse
     Route::get('/patient/documents/analyses','DocumentsController@analyse')->name('patients.analyse');
     Route::post('/patient/documents/analyses/store','DocumentsController@storeAnalyse')->name('patients.storeAnalyse');
     Route::get('/patient/documents/analyses/show/{id}','DocumentsController@showAnalyse')->name('patients.showAnalyse');
+    Route::post('/patient/documents/analyses/show/','DocumentsController@prepareAnalyse')->name('patients.prepareAnalyse');
+
         // certificat medical
     Route::get('/patient/documents/certificat_medical','DocumentsController@certificatMedical')->name('patients.certificat_medical');
     Route::post('/patient/documents/certificat_medical/sotre','DocumentsController@storeCertificatMedical')->name('patients.storeCertificat_medical');

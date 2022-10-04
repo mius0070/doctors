@@ -18,9 +18,10 @@ class CreateOrdonnancesTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('patient_id');
+            $table->text('note');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-       
+
         });
     }
 

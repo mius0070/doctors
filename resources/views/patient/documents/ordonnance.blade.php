@@ -9,7 +9,6 @@
             <b>{{ \Carbon\Carbon::parse($ordonnance->getPatient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}</b>
             <br>
             <center>{!! DNS1D::getBarcodeSVG($barcode, 'C128', 2, 50, 'black', true) !!}</center>
-            <br>
             <small>CA: {{ $ordonnance->getPatient->code_archive }}</small>
         </div>
     </div>
@@ -23,25 +22,7 @@
 
 @section('content')
 
-    <div class="table-responsive">
-        <table class="table borderless">
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($ordonnance->orDetail as $item)
-                    <tr>
-                        <th style="width:50%">{{ $i++ }}-{{ $item->med_lib }}</th>
-                        <td>{{ $item->nbr_p_j }} *j</td>
-                        <td>pendnat <b>{{ $item->nbr_j }} jours </b></td>
-                    </tr>
-                @endforeach
-
-
-            </tbody>
-        </table>
-
-    </div>
+    {!! $ordonnance->note  !!}
     <br>
     <br><br><br>
     <div class="row">

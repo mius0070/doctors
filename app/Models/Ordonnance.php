@@ -12,12 +12,10 @@ class Ordonnance extends Model
 
     protected $fillable = [
         'user_id',
-        'patient_id'
+        'patient_id',
+        'note',
     ];
 
-    public function orDetail(){
-        return $this->hasMany(OrDetail::class,'ordonnance_id');
-    }
     public function getUser(){
         return $this->belongsTo(User::class,'user_id');
     }

@@ -8,7 +8,7 @@
         <div class="card">
             <div class="card-body">
 
-                <form action="{{ route('doc.patients.storeAnalyse') }}" method="POST">
+                <form action="{{ route('doc.patients.prepareAnalyse') }}" method="POST">
                     @csrf
                     @method('post')
                     <div class="form-group">

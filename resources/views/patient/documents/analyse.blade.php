@@ -8,7 +8,6 @@
             <b>{{ \Carbon\Carbon::parse($analyse->getPatient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}</b>
             <br>
             <center>{!! DNS1D::getBarcodeSVG($barcode, 'C128', 2, 50, 'black', true) !!}</center>
-            <br>
             <small>CA: {{ $analyse->getPatient->code_archive }}</small>
         </div>
     </div>
@@ -21,25 +20,8 @@
 @endsection
 
 @section('content')
+    {!! $analyse->note  !!}
 
-    <div class="table-responsive">
-        <table class="table borderless">
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-                @foreach ($analyse->anaDetail as $item)
-                    <tr>
-                        <th style="width:50%">{{ $i++ }}-{{ $item->ana_lib }}</th>
-
-                    </tr>
-                @endforeach
-
-
-            </tbody>
-        </table>
-
-    </div>
     <br>
     <br><br><br>
     <div class="row">

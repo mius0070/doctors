@@ -11,12 +11,10 @@ class Analyse extends Model
     protected $table='analyses';
     protected $fillable = [
         'user_id',
-        'patient_id'
+        'patient_id',
+        'note'
     ];
 
-    public function anaDetail(){
-        return $this->hasMany(AnaDetail::class,'analyse_id');
-    }
     public function getUser(){
         return $this->belongsTo(User::class,'user_id');
     }

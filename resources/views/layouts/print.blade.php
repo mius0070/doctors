@@ -9,8 +9,7 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- Font Awesome -->
@@ -22,7 +21,7 @@
             background: rgb(204, 204, 204);
         }
 
-        page[size="A4"] {
+        .page[size="A4"] {
             width: 22cm;
             height: 29.7cm;
             background: white;
@@ -39,10 +38,11 @@
         @media print {
 
             body,
-            page {
+            .page {
 
                 margin: 0;
                 padding: 0;
+                width: 100%;
                 box-shadow: none;
             }
 
@@ -57,7 +57,9 @@
 </head>
 
 <body>
-    <center>
+
+    <div class="text-center">
+
         <div class="dropdown">
             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -65,11 +67,14 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                 <button class="dropdown-item" type="button" onclick="window.print()">Imprimer</button>
+                @yield('button')
                 <a href="{{ route('doc.patients.list_doc') }}" class="dropdown-item" type="button">Retour</a>
             </div>
         </div>
-    </center>
-    <page size="A4">
+
+    </div>
+
+    <div class="page" size="A4">
 
         <div class="row ">
             <div class="col-md-5 text-center">
@@ -110,10 +115,11 @@
             </div>
         </div>
 
+
         @yield('content')
 
 
-    </page>
+    </div>
 
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
@@ -121,8 +127,7 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('dist/js/demo.js') }}"></script>
+
 </body>
 
 </html>

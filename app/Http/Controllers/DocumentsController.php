@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AnaDetail;
 use App\Models\Analyse;
 use Illuminate\Http\Request;
 use App\Models\Patient;
@@ -37,20 +36,23 @@ class DocumentsController extends Controller
         // Get Ordonannces
         $ordonnance = Ordonnance::with('getUser')
             ->where('patient_id', $patient_id)
+            ->orderBy('created_at','DESC')
             ->get();
 
         // Get analyses
         $analyse = Analyse::with('getUser')
             ->where('patient_id', $patient_id)
+            ->orderBy('created_at','DESC')
             ->get();
         // Get certificat Medical
         $certificat_medical = CerificatMedical::with('getUser')
             ->where('patient_id', $patient_id)
+            ->orderBy('created_at','DESC')
             ->get();
         // Get radio
-        $radio = Archive::with('getUser')
-            ->with('getTypeRadio')
+        $radio = Archive::with(['getUser','getTypeRadio'])
             ->where('patient_id', $patient_id)
+            ->orderBy('created_at','DESC')
             ->get();
         //count document
         $doc_count =$certificat_medical->count() + $analyse->count() + $ordonnance->count();
@@ -84,42 +86,49 @@ class DocumentsController extends Controller
     public function storeOrdonnance(Request $request)
     {
         if (session()->has('pat')) {
+
             $user_id = Auth::id();
             $patient_id = session()->get('pat');
             $data = [
                 'user_id' => $user_id,
-                'patient_id' => $patient_id
+                'patient_id' => $patient_id,
+                'note' => $request->content,
             ];
-            $lastinsert = Ordonnance::create($data);
+            if($data)
+            $lastinsert=Ordonnance::create($data);
 
-            if (count($request->medicaments) > 0) {
-                foreach ($request->medicaments as $item => $v) {
-                    //
-                    $data = [
-                        'med_lib'       => $request->medicaments[$item],
-                        'nbr_p_j'       => $request->nbrpj[$item],
-                        'nbr_j'         => $request->nbrj[$item],
-                        'ordonnance_id' => $lastinsert->id,
-                    ];
-
-
-                    OrDetail::insert($data);
-                }
-            }
-
-            return redirect()->route('doc.patients.showOrdonnance', $lastinsert);
+         return redirect()->route('doc.patients.showOrdonnance', $lastinsert->id);
         }
         return redirect()->route('doc.index');
     }
+
+    public function prepareOrdonnance(Request $request)
+    {
+
+        $patient_id = session()->get('pat');
+        $patient_id ? null : abort(404);
+        $patient = Patient::findOrFail($patient_id);
+        $ordonnance =[ $request->all()];
+
+        $barcode = $patient_id;
+
+        $entete = Entete::with('getWilaya')->first();
+
+
+        return view('patient.documents.prepare_ordonnance', [
+            'entete' => $entete,
+            'ordonnance' => $ordonnance,
+            'patient' =>$patient,
+            'barcode' => $barcode
+        ]);
+    }
+
     public function showOrdonnance($id)
     {
 
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
-        $ordonnance = Ordonnance::with('orDetail')
-            ->with('getUser')
-            ->with('getPatient')
-            ->findOrFail($id);
+        $ordonnance = Ordonnance::with(['getUser','getPatient'])->findOrFail($id);
 
         $barcode = $ordonnance->getPatient->id;
         $entete = Entete::with('getWilaya')->first();
@@ -131,6 +140,7 @@ class DocumentsController extends Controller
             'barcode' => $barcode
         ]);
     }
+
 
     // analyses
 
@@ -147,35 +157,47 @@ class DocumentsController extends Controller
     public function storeAnalyse(Request $request)
     {
         if (session()->has('pat')) {
+
             $user_id = Auth::id();
             $patient_id = session()->get('pat');
             $data = [
                 'user_id' => $user_id,
-                'patient_id' => $patient_id
+                'patient_id' => $patient_id,
+                'note' => $request->content,
             ];
-            $lastinsert = Analyse::create($data);
-            if (count($request->analyse) > 0) {
-                foreach ($request->analyse as $item => $v) {
-                    $data = [
-                        'ana_lib' => $request->analyse[$item],
-                        'analyse_id' => $lastinsert->id
-                    ];
+            if($data)
+            $lastinsert=Analyse::create($data);
 
-                    AnaDetail::insert($data);
-                }
-            }
-            return redirect()->route('doc.patients.showAnalyse', $lastinsert);
+         return redirect()->route('doc.patients.showAnalyse', $lastinsert->id);
         }
         return redirect()->route('doc.index');
+    }
+    public function prepareAnalyse(Request $request)
+    {
+
+        $patient_id = session()->get('pat');
+        $patient_id ? null : abort(404);
+        $patient = Patient::findOrFail($patient_id);
+        $analyse =[ $request->all()];
+
+        $barcode = $patient_id;
+
+        $entete = Entete::with('getWilaya')->first();
+
+
+        return view('patient.documents.prepare_analyse', [
+            'entete' => $entete,
+            'analyse' => $analyse,
+            'patient' =>$patient,
+            'barcode' => $barcode
+        ]);
     }
     public function showAnalyse($id)
     {
 
         $patient_id = session()->get('pat');
         $patient_id ? null : abort(404);
-        $analyse = Analyse::with('anaDetail')
-            ->with('getUser')
-            ->with('getPatient')
+        $analyse = Analyse::with(['getUser','getPatient'])
             ->findOrFail($id);
 
         $barcode = $analyse->getPatient->id;
@@ -185,7 +207,6 @@ class DocumentsController extends Controller
         return view('patient.documents.analyse', [
             'entete' => $entete,
             'analyse' => $analyse,
-
             'barcode' => $barcode
         ]);
     }
