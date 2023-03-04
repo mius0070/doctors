@@ -14,7 +14,7 @@
                         <br>
                         <small>{{ $patient->birthday }}&nbsp;({{ \Carbon\Carbon::parse($patient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }})</small>
                         <br>
-                        <center>{!! DNS1D::getBarcodeSVG($patient->id, 'C128', 2, 50, 'black', true) !!}</center>
+                       <center> {!! DNS1D::getBarcodeHTML("$patient->id", 'C128') !!}</center>
                         <small>NIP: 3001020{{ $patient->id }}</small>
                         <br>
                         <small>CA: {{ $patient->code_archive }}</small>
@@ -49,6 +49,8 @@
             .print-content * {
                 visibility: visible;
                 margin: 0;
+                -webkit-print-color-adjust: exact;
+
             }
 
         }

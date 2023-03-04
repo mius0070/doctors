@@ -8,8 +8,7 @@
             <br>
             <b>{{ \Carbon\Carbon::parse($certificat->getPatient->birthday)->diff(\Carbon\Carbon::now())->format('%y ans') }}</b>
             <br>
-            <center>{!! DNS1D::getBarcodeSVG($barcode, 'C128', 2, 50, 'black', true) !!}</center>
-            <br>
+            <center>{!! DNS1D::getBarcodeHTML("$barcode", 'C128')  !!}</center>
             <small>CA: {{ $certificat->getPatient->code_archive }}</small>
         </div>
     </div>
@@ -67,5 +66,19 @@
 
 
 @section('style')
+    <style>
+        .borderless td,
+        .borderless th {
+            border: none;
+        }
+        @media print {
+            body * {
+                margin: 0;
 
+                        -webkit-print-color-adjust: exact;
+
+            }
+
+        }
+    </style>
 @endsection
